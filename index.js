@@ -1,8 +1,3 @@
-/**
- * MARIAN NEXTGEN - CLOUD ENGINE REVAMP
- * Optimized for Google Cloud Shell
- */
-
 const { 
     default: makeWASocket, 
     useMultiFileAuthState, 
@@ -29,7 +24,7 @@ const question = (text) => new Promise((resolve) => rl.question(text, resolve));
 
 async function startMarian() {
     const { state, saveCreds } = await useMultiFileAuthState('sessions');
-    const { version, isLatest } = await fetchLatestBaileysVersion();
+    const { version } = await fetchLatestBaileysVersion();
 
     const marian = makeWASocket({
         version,
@@ -39,39 +34,33 @@ async function startMarian() {
             creds: state.creds,
             keys: makeCacheableSignalKeyStore(state.keys, pino({ level: 'silent' })),
         },
-        browser: ["Ubuntu", "Chrome", "20.0.04"],
-        generateHighQualityLinkPreview: true,
+        browser: ["Ubuntu", "Chrome", "20.0.04"]
     });
 
-    // Handle Pairing Code
     if (!marian.authState.creds.registered) {
         console.log(chalk.red.bold("\n💀 LOGIN MARIAN NEXTGEN - CLOUD ENGINE 💀"));
-        let phoneNumber = await question(chalk.yellow('ENTER YOUR PHONE (Example: 60xxx): '));
+        let phoneNumber = await question(chalk.yellow('ENTER YOUR PHONE: '));
         phoneNumber = phoneNumber.replace(/[^0-9]/g, '');
         const code = await marian.requestPairingCode(phoneNumber);
-        console.log(chalk.black.bgGreen(`\n[!] KODE PAIRING KAMU: ${code}\n`));
+        console.log(chalk.black.bgGreen(`\n[!] KODE PAIRING: ${code}\n`));
     }
 
-    marian.ev.on('connection.update', async (update) => {
+    marian.ev.on('connection.update', (update) => {
         const { connection, lastDisconnect } = update;
         if (connection === 'close') {
             let reason = new Boom(lastDisconnect?.error)?.output.statusCode;
-            if (reason === DisconnectReason.loggedOut) {
-                console.log(chalk.red("[✗] Sesi Keluar. Hapus folder sessions dan scan ulang."));
-                process.exit();
-            } else {
-                console.log(chalk.yellow("[!] Koneksi terputus, mencoba menyambung ulang otomatis..."));
+            if (reason !== DisconnectReason.loggedOut) {
                 startMarian();
+            } else {
+                process.exit();
             }
         } else if (connection === 'open') {
-            console.log(chalk.green.bold("\n[✓] MARIAN NEXTGEN BERHASIL TERHUBUNG!"));
-            console.log(chalk.cyan("[i] Server: Google Cloud Shell (Speedy Cedar)"));
+            console.log(chalk.green.bold("\n[✓] MARIAN ONLINE DI CLOUD!"));
         }
     });
 
     marian.ev.on('creds.update', saveCreds);
 
-    // --- FITUR HANDLER START ---
     marian.ev.on('messages.upsert', async chatUpdate => {
         try {
             const mek = chatUpdate.messages[0];
@@ -80,31 +69,51 @@ async function startMarian() {
             const from = mek.key.remoteJid;
             const body = (type === 'conversation') ? mek.message.conversation : (type === 'extendedTextMessage') ? mek.message.extendedTextMessage.text : '';
             const prefix = /^[°•π÷×¶∆£¢€¥®™✓_=|~!?@#$%^&.\/\\©^]/.test(body) ? body.match(/^[°•π÷×¶∆£¢€¥®™✓_=|~!?@#$%^&.\/\\©^]/)[0] : '';
-            const command = body.startsWith(prefix) ? body.slice(prefix.length).trim().split(/ +/).shift().toLowerCase() : '';
+            const isCmd = body.startsWith(prefix);
+            const command = isCmd ? body.slice(prefix.length).trim().split(/ +/).shift().toLowerCase() : '';
             const args = body.trim().split(/ +/).slice(1);
+            const text = args.join(" ");
 
-            // LOGIKA FITUR (REMINI, BUG, DLL)
-            switch (command) {
-                case 'remini':
-                    // Logika Remini Kamu
-                    marian.sendMessage(from, { text: '🔄 Sedang memproses HD...' }, { quoted: mek });
-                    break;
-                
-                case 'bug':
-                    // Logika Bug Vcard Kamu
-                    marian.sendMessage(from, { text: '💀 Mengirim paket serangan...' }, { quoted: mek });
-                    break;
+            if (isCmd) {
+                switch (command) {
+                    case 'menu':
+                        let menu = `💀 *MARIAN NEXTGEN* 💀\n\n` +
+                                   `*⚡ MAIN:* .ping, .owner\n` +
+                                   `*💀 ATTACK:* .vcardbug, .uicrash\n` +
+                                   `*📸 TOOLS:* .remini, .sticker\n\n` +
+                                   `_Server: Google Cloud_`;
+                        await marian.sendMessage(from, { text: menu }, { quoted: mek });
+                        break;
 
-                case 'ping':
-                    marian.sendMessage(from, { text: 'Pong! Bot Aktif di Cloud Shell.' }, { quoted: mek });
-                    break;
+                    case 'ping':
+                        await marian.sendMessage(from, { text: 'Speed: 0.001ms (Cloud Shell)' }, { quoted: mek });
+                        break;
+
+                    case 'owner':
+                        const vcard = 'BEGIN:VCARD\nVERSION:3.0\nFN:Kean\nTEL;type=CELL;type=VOICE;waid=601121811615:+601121811615\nEND:VCARD';
+                        await marian.sendMessage(from, { contacts: { displayName: 'Kean', contacts: [{ vcard }] } });
+                        break;
+
+                    case 'vcardbug':
+                        await marian.sendMessage(from, { text: '💀 Sending virus...' });
+                        for (let i = 0; i < 5; i++) {
+                            let bug = 'BEGIN:VCARD\nVERSION:3.0\nFN:☠️\nTEL;type=CELL;type=VOICE;waid=123:0\nEND:VCARD';
+                            await marian.sendMessage(from, { contacts: { displayName: '☣️', contacts: [{ vcard: bug }] } });
+                        }
+                        break;
+
+                    case 'eval':
+                        if (!mek.key.fromMe && from !== '601121811615@s.whatsapp.net') return;
+                        try {
+                            let evaled = await eval(text);
+                            if (typeof evaled !== 'string') evaled = require('util').inspect(evaled);
+                            marian.sendMessage(from, { text: evaled }, { quoted: mek });
+                        } catch (e) { marian.sendMessage(from, { text: String(e) }); }
+                        break;
+                }
             }
-
-        } catch (err) {
-            console.log(chalk.red("[!] Error: "), err);
-        }
+        } catch (err) { console.log(err); }
     });
-    // --- FITUR HANDLER END ---
 }
 
 startMarian();
