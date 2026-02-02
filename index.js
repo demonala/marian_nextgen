@@ -764,7 +764,7 @@ class MarianSuperBot {
                 creds: state.creds,
                 keys: makeCacheableSignalKeyStore(state.keys, pino({ level: 'fatal' }))
             },
-            browser: ["Ubuntu", "Chrome", "20.0.04"],,
+            browser: ["Ubuntu", "Chrome", "20.0.04"],
             connectTimeoutMs: 60000,
             keepAliveIntervalMs: 25000,
             markOnlineOnConnect: true,
