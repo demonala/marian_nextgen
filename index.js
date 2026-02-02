@@ -65,7 +65,7 @@ async function startMarianReborn() {
     console.log(chalk.red.bold(`
     ╔══════════════════════════════════════════════════╗
     ║  ⚡ MARIAN GIGA-AIO v7.0 [REBORN] ONLINE ⚡      ║
-    ║  Status: Fixed Response | AI: Disabled           ║
+    ║  Status: Stable Pairing | AI: Disabled           ║
     ║  Developer: Kean | Owner: ${owner[0]}           ║
     ╚══════════════════════════════════════════════════╝
     `))
@@ -86,11 +86,18 @@ async function startMarianReborn() {
         keepAliveIntervalMs: 15000,
     })
 
+    // PAIRING SYSTEM WITH STABLE DELAY
     if (!sock.authState.creds.registered) {
         const readline = require("readline").createInterface({ input: process.stdin, output: process.stdout })
         readline.question(chalk.yellow("\n[!] Masukkan Nomor: "), async (nr) => {
-            let code = await sock.requestPairingCode(nr.replace(/[^0-9]/g, ''))
-            console.log(chalk.black.bgWhite(`\n KODE PAIRING: ${code} \n`))
+            console.log(chalk.cyan("[+] Menstabilkan koneksi (3 Detik)..."))
+            await delay(3000) // KUNCI AGAR TIDAK CONNECTION CLOSED
+            try {
+                let code = await sock.requestPairingCode(nr.replace(/[^0-9]/g, ''))
+                console.log(chalk.black.bgWhite(`\n KODE PAIRING: ${code} \n`))
+            } catch (err) {
+                console.log(chalk.red("\n[!] Gagal minta kode. Ulangi node index.js"))
+            }
             readline.close()
         })
     }
@@ -117,8 +124,6 @@ async function startMarianReborn() {
             const m = messages[0]
             if (!m.message || m.key.fromMe) return
             const from = m.key.remoteJid
-            
-            // Filter Group agar tidak lag
             if (from.endsWith('@g.us')) return 
 
             const type = getContentType(m.message)
@@ -159,7 +164,7 @@ async function startMarianReborn() {
 • /status - Info server
 • /restart - Reboot engine
 
-_Status: Reborn Fixed_`
+_Status: Reborn Stable_`
                     await sock.sendMessage(from, { text: menu }, { quoted: m })
                     break;
 
