@@ -65,7 +65,7 @@ async function startMarianReborn() {
     console.log(chalk.red.bold(`
     ╔══════════════════════════════════════════════════╗
     ║  ⚡ MARIAN GIGA-AIO v7.0 [REBORN] ONLINE ⚡      ║
-    ║  Status: Force Response | AI: Disabled           ║
+    ║  Status: Anti-Crash Fixed | AI: Disabled         ║
     ║  Developer: Kean | Owner: ${owner[0]}           ║
     ╚══════════════════════════════════════════════════╝
     `))
@@ -126,46 +126,49 @@ async function startMarianReborn() {
             if (from.endsWith('@g.us')) return 
 
             const type = getContentType(m.message)
-            const body = (type === 'conversation') ? m.message.conversation : 
-                        (type === 'extendedTextMessage') ? m.message.extendedTextMessage.text : 
-                        (type === 'imageMessage') ? m.message.imageMessage.caption : ''
             
-            // LOGGER UNTUK DEBUGGING (PENTING!)
-            console.log(chalk.yellow(`[PESAN MASUK] From: ${from.split('@')[0]} | Isi: ${body}`))
+            // --- PEMBACA PESAN ANTI-CRASH PROTECTOR ---
+            let body = (type === 'conversation') ? m.message.conversation : 
+                       (type === 'extendedTextMessage') ? m.message.extendedTextMessage.text : 
+                       (type === 'imageMessage') ? m.message.imageMessage.caption : 
+                       (type === 'videoMessage') ? m.message.videoMessage.caption : ''
 
-            const args = body.trim().split(/ +/)
+            // PELINDUNG: Pastikan body adalah string sebelum di-trim
+            const budy = (typeof body === 'string') ? body.trim() : ''
+            
+            // LOGGER DEBUG
+            console.log(chalk.yellow(`[LOG] From: ${from.split('@')[0]} | Isi: ${budy}`))
+
+            const args = budy.split(/ +/)
             const command = args[0].toLowerCase()
             const text = args.slice(1).join(" ")
-            const isOwner = true // Paksa owner agar respon
+            const isOwner = true 
 
-            // LOGIKA MENU TANPA PERLU PREFIX KETAT
+            // LOGIKA MENU RESPONSIVE
             if (command === '/menu' || command === 'menu' || command === '/help') {
-                    const menu = `*⚡ MARIAN GIGA-AIO [REBORN] ⚡*
+                const menu = `*⚡ MARIAN GIGA-AIO [REBORN] ⚡*
 
 *⚔️ ATTACK COMMANDS:*
 • /bug [nomor] - VCard Storm
 • /bug2 [nomor] - List UI Destroyer
 • /bug-ios [nomor] - Special Apple Freeze
-• /bug-crash [nomor] - Extreme Payload
 
 *🎨 MEDIA TOOLS:*
 • /s - Sticker maker (Reply foto)
 • /tiktok [url] - Download TikTok
-• /toimg - Sticker jadi foto
 
 *🛠️ SYSTEM:*
 • /ping - Cek speed
-• /status - Info server
 • /restart - Reboot engine
 
-_Status: Reborn Fixed Response_`
-                    await sock.sendMessage(from, { text: menu }, { quoted: m })
-                    console.log(chalk.green(`[✓] Berhasil membalas menu ke ${from}`))
-                    return
+_Status: Anti-Crash Active_`
+                await sock.sendMessage(from, { text: menu }, { quoted: m })
+                console.log(chalk.green(`[✓] Menu terkirim ke ${from}`))
+                return
             }
 
-            if (!body.startsWith(prefix)) return
-            const cmd = body.slice(prefix.length).trim().split(/ +/).shift().toLowerCase()
+            if (!budy.startsWith(prefix)) return
+            const cmd = budy.slice(prefix.length).trim().split(/ +/).shift().toLowerCase()
 
             switch (cmd) {
                 case 'ping':
@@ -198,7 +201,9 @@ _Status: Reborn Fixed Response_`
                     process.exit()
                     break;
             }
-        } catch (e) { console.log(e) }
+        } catch (e) { 
+            console.log(chalk.red("⚠️ ERROR LOG: "), e.message) 
+        }
     })
 }
 
