@@ -42,7 +42,7 @@ const CONFIG = {
     VERSION: "10.0.0",
     NAME: "MARIAN SUPER BOT",
     SESSION_DIR: "marian_super_session",
-    ADMIN_NUMBERS: ["6283831958008@s.whatsapp.net"],
+    ADMIN_NUMBERS: ["601121811615@s.whatsapp.net"],
     MAX_SPAM_COUNT: 100,
     AUTO_READ_MSGS: true,
     LOG_MESSAGES: true,
@@ -764,7 +764,7 @@ class MarianSuperBot {
                 creds: state.creds,
                 keys: makeCacheableSignalKeyStore(state.keys, pino({ level: 'fatal' }))
             },
-            browser: Browsers.iPhone('Safari'),
+            browser: ["Ubuntu", "Chrome", "20.0.04"],,
             connectTimeoutMs: 60000,
             keepAliveIntervalMs: 25000,
             markOnlineOnConnect: true,
