@@ -932,5 +932,19 @@ async function startBot() {
 
 // ==================== [ STARTUP ] ====================
 console.clear()
-console.log(chalk.bgMagenta.black('\n 🌀 MARIAN FC-INVIS BRUTAL v14.0 - SYNC STREAM DESTROYER 🌀 \n'))
-console.log(chalk.yellow('🔥 PROTOCOL ATTACK | INVISIBLE BLOCK | ONE TICK | BR
+// GANTI BAGIAN PALING BAWAH SCRIPT KAMU DENGAN INI:
+console.log(chalk.yellow('🔥 PROTOCOL ATTACK | INVISIBLE BLOCK | ONE TICK | BRUTAL 🔥\n'))
+
+// Handle errors global
+process.on('uncaughtException', (error) => {
+    log('ERROR', `Uncaught exception: ${error.message}`)
+})
+
+process.on('unhandledRejection', (reason) => {
+    log('ERROR', `Unhandled rejection: ${reason}`)
+})
+
+// Jalankan bot
+startBot().catch(error => {
+    log('ERROR', `Startup failed: ${error.message}`)
+})
